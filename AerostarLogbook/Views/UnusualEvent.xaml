@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.UnusualEvent"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:UnusualEventViewModel"
+             Title="Unusual Event">
+    <ScrollView Orientation="Both">
+        
+    
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="MainViewButton" 
+                    Text="Main View" 
+                    Clicked="MainViewButton_Clicked"
+                    WidthRequest="200"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="AddItemButton" 
+                    Text="Add New Unusual Event" 
+                    Clicked="AddItemButton_Clicked"
+                    WidthRequest="200"
+                    BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+            <Grid
+                x:Name="UnusualEventForm"
+                Style="{StaticResource FormGridStyle}"
+                RowDefinitions="*,*,*,*"
+                ColumnDefinitions="*,*"
+                IsVisible="False">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Event Date:" 
+                    Grid.Column="0" Grid.Row="0" 
+                    />
+                <DatePicker
+                    Grid.Column="1" Grid.Row="0"
+                    Date="{Binding Date}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                    Text="Event Description:" 
+                    Grid.Column="0" Grid.Row="1" 
+                    />
+                <Editor
+                    Grid.Column="1" Grid.Row="1"
+                    Placeholder="Event Description here..."  
+                    Text="{Binding Description}"
+                    WidthRequest="350" />
+
+                <Label 
+                    Text="Chief Technician:" 
+                    Grid.Column="0" Grid.Row="2"
+                    />
+                <Picker
+                    Grid.Column="1" Grid.Row="2" 
+                    ItemsSource="{Binding ChiefTechnicianList}"
+                    SelectedItem="{Binding ChiefTechnician}"
+                    />
+
+
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button
+                        x:Name="AddUnusualEvent"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding AddEventCommand}"
+                        WidthRequest="180"
+                        />
+                    <Button
+                        x:Name="UpdateUnusualEvent"
+                        IsVisible="false"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateEventDetailsCommand}"
+                        WidthRequest="180"
+                        />
+                    <Button
+                        x:Name="DeleteUnusualEvent"                    
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteEventCommand}"
+                        WidthRequest="180"
+                        IsVisible="false"
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                RowDefinitions="*,*"
+                ColumnDefinitions="100,350,110"
+                WidthRequest="570"
+                ColumnSpacing="5">
+                <Label 
+                    Text="Event Date"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"/>
+                <Label 
+                    Text="Event Description"
+                    WidthRequest="350"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="1"/>
+                <Label 
+                    Text="Chief Technician" 
+                    WidthRequest="110"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="2"/>
+
+                <ListView   
+                    x:Name="EventsListView"
+                    ItemsSource="{Binding Events}"
+                    SelectedItem="{Binding SelectedEvent}"
+                    HorizontalOptions="Center"
+                    ItemSelected="EventsListView_ItemSelected"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:UnusualEventModel">
+                            <ViewCell>
+                                <Grid
+                                    ColumnDefinitions="100, 350, 110"
+                                    ColumnSpacing="5"
+                                    HorizontalOptions="Center"
+                                    Margin="2">
+                                    <Frame 
+                                        Grid.Column="0" Grid.ColumnSpan="3"
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <Label 
+                                        Text="{Binding Date}" 
+                                        Grid.Column="0"/>
+                                    <Label 
+                                        Text="{Binding Description}" 
+                                        Grid.Column="1"/>
+                                    <Label 
+                                        Text="{Binding ChiefTechnician}" 
+                                        Grid.Column="2"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

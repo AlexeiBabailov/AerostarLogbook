@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.HardwareConfiguration"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:HardwareConfigurationViewModel"
+             Title="Hardware Configuration Changes">
+
+    <ScrollView Orientation="Both">
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                x:Name="GeneralButton"
+                Text="Main View" 
+                Clicked="HWGeneralClicked"
+                WidthRequest="280"
+                BackgroundColor="#267AA9"
+                Style="{StaticResource Button_TopManu}"/>
+                <Button
+                x:Name="AssemblyButton"
+                Text="Assemble" 
+                Clicked="OpenHWClicked"
+                WidthRequest="280"
+                Style="{StaticResource Button_TopManu}"
+                />
+                <Button 
+                x:Name="DisassemblyButton"
+                Text="Disassemble"
+                Clicked="CloseHWClicked"
+                WidthRequest="280"
+                Style="{StaticResource Button_TopManu}"/>
+            </HorizontalStackLayout>
+
+            <Grid 
+                x:Name="AssemblyForm" 
+                IsVisible="False"
+                Style="{StaticResource FormGridStyle}"
+                ColumnDefinitions="200,300"
+                WidthRequest="510"
+                RowDefinitions="*,*,*,*"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                Text="Date:" 
+                Grid.Column="0" Grid.Row="0" 
+               />
+                <DatePicker 
+                Date="{Binding AssemblyDate}" 
+                Grid.Column="1" Grid.Row="0"                
+                >
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                Text="Description:" 
+                Grid.Column="0" Grid.Row="1" 
+               />
+                <Entry 
+                Text="{Binding AssemblyDescription}"
+                Grid.Column="1" Grid.Row="1" 
+                />
+
+                <Label 
+                Text="Chief Technician:" 
+                Grid.Column="0" Grid.Row="2" 
+                />
+                <Picker
+                ItemsSource="{Binding ChiefTechnicianList}"
+                SelectedItem="{Binding AssemblyChiefTechnician}"
+                Grid.Column="1" Grid.Row="2" 
+                />
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button 
+                        x:Name="AddHardwareConf"
+                        Command="{Binding AddHWConfCommand}" 
+                        Style="{StaticResource AddButtonStyle}"
+                        WidthRequest="160"
+                        Text="Assemble"
+                        />
+                    <Button
+                        x:Name="UpdateHardwareConf"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateHWConfigurationCommand}"
+                        WidthRequest="160"
+                        IsVisible="false"
+                        />
+                    <Button 
+                        x:Name="DeleteHardwareConf"
+                        WidthRequest="160"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteHWConfCommand}"
+                        IsVisible="false"
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid 
+            x:Name="DisassemblyForm" 
+            IsVisible="False"
+            Style="{StaticResource FormGridStyle}"
+            ColumnDefinitions="130,210"
+            WidthRequest="350"
+            RowDefinitions="*,*,*"
+            >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                Text="Date:" 
+                Grid.Column="0" Grid.Row="0" 
+                />
+                <DatePicker 
+                Date="{Binding DisassemblyDate}"
+                Grid.Column="1" Grid.Row="0" >
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                Text="Chief Technician:" 
+                Grid.Column="0" Grid.Row="1" 
+                />
+                <Picker 
+                Grid.Column="1" Grid.Row="1" 
+                ItemsSource="{Binding ChiefTechnicianList}"
+                SelectedItem="{Binding DisassemblyChiefTechnician}"
+                
+                />
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button
+                        Command="{Binding DisassemblyHWConfCommand}" 
+                        Style="{StaticResource AddButtonStyle}"
+                        Text="Disassemble"
+                        WidthRequest="160"
+                        />
+                    <Button 
+                        WidthRequest="160"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteHWConfCommand}"
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+            RowDefinitions="*,*,*"
+            ColumnDefinitions="100,200,150,100,150"
+            WidthRequest="720"
+            ColumnSpacing="5"
+            RowSpacing="5">
+                <Label 
+                    Text="Assembly"
+                    WidthRequest="460"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
+                <Label 
+                    Text="Disassembly"
+                    WidthRequest="255" 
+                    FontAttributes="Bold" 
+                    FontSize="20" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2"/>
+                <Label
+                    Text="Date" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="0"/>
+                <Label 
+                    Text="Description"
+                    WidthRequest="200" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="1"/>
+                <Label 
+                    Text="Chief Technician"
+                    WidthRequest="150" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="2"/>
+                <Label
+                    Text="Date" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="3"/>
+                <Label 
+                    Text="Chief Technician" 
+                    WidthRequest="150" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="4"/>
+                <ListView
+                    x:Name="HardwareConf_ListView"
+                    ItemsSource="{Binding HWConfList}"
+                    SelectedItem="{Binding SelectedHWConf}"
+                    ItemSelected="HardwareConf_ListView_ItemSelected"
+                    HorizontalOptions="Center"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="5"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:HardwareConfigurationModel" >
+                            <ViewCell>
+                                <Grid 
+                                    ColumnDefinitions="100,200,150,100,150"
+                                    ColumnSpacing="5"
+                                    HorizontalOptions="Center"
+                                    Margin="2">
+                                    <Frame 
+                                        Grid.Column="0" Grid.ColumnSpan="5"
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding AssemblyDate} "
+                                        FontSize="11"/>
+                                    <Label
+                                        Grid.Column="1" 
+                                        Text="{Binding AssemblyDescription}" />
+                                    <Label
+                                        Grid.Column="2" 
+                                        Text="{Binding AssemblyChiefTechnician}" />
+                                    <Label
+                                        Grid.Column="3"
+                                        Text="{Binding DisassemblyDate}" />
+                                    <Label
+                                        Grid.Column="4" 
+                                        Text="{Binding DisassemblyChiefTechnician}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

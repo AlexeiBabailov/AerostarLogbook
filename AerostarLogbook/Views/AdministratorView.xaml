@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.AdministratorView"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:AdministratorViewModel"
+             Title="AdministratorView">
+
+    <ScrollView Orientation="Both">
+
+        <VerticalStackLayout
+            Spacing="5">
+        
+                <Button
+                    x:Name="MainButton"
+                    Text="Main View" 
+                    Clicked="MainButton_Clicked"
+                    WidthRequest="850"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="5">
+                <Button 
+                    x:Name="UAVButton" 
+                    Text="UAV's" 
+                    Clicked="UAV_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+                <Button 
+                    x:Name="EngineButton" 
+                    Text="Engines" 
+                    Clicked="Engine_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+                <Button 
+                    x:Name="ComponentsButton" 
+                    Text="Components" 
+                    Clicked="Components_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+             </HorizontalStackLayout>
+
+            <HorizontalStackLayout 
+                HorizontalOptions="Center"
+                Spacing="5">
+                <Button 
+                    x:Name="TechniciansButton" 
+                    Text="Technicians" 
+                    Clicked="Technicians_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+                <Button 
+                    x:Name="ChiefTechniciansButton" 
+                    Text="Chief Technicians" 
+                    Clicked="ChiefTechnicians_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+                <Button 
+                    x:Name="ExternalPilotsButton" 
+                    Text="External Pilots" 
+                    Clicked="ExternalPilots_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="5">
+
+                <VerticalStackLayout
+                    x:Name="UavsView"
+                    IsVisible="true"
+                    HorizontalOptions="Center"
+                    >
+                    <Grid       
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label 
+                            Text="New UAV Tail Number:" Grid.Column="0" Grid.Row="0" 
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="{Binding TailNum}"/>
+
+                        <Label 
+                            Text="Hours: " Grid.Column="0" Grid.Row="1" 
+                                />
+                        <Entry
+                            x:Name="UavHours"
+                            Grid.Column="1" Grid.Row="1"
+                            Text="{Binding UavHours}"/>
+
+                        <Button 
+                            Grid.Column="0" Grid.Row="2"
+                            Style="{StaticResource AddButtonStyle}"
+                            Clicked="AddUavButton_Clicked"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="2"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteUavCommand}"
+                            />
+                    </Grid>
+                    <Grid
+                    RowDefinitions="*,*"
+                    ColumnDefinitions="100,100"
+                    WidthRequest="205"
+                    ColumnSpacing="5">
+                        <Label 
+                            Text="UAV Tail"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="0"/>
+                        <Label 
+                            Text="Hours"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="1"/>
+                        <ListView 
+                            x:Name="UavsListView"
+                            ItemsSource="{Binding Uavs}"
+                            SelectedItem="{Binding SelectedUav}"
+                            BackgroundColor="White" SeparatorColor="Gray"
+                            Grid.Row="1" Grid.ColumnSpan="2"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:UavModel" >
+                                    <ViewCell>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label 
+                                                Text="{Binding TailNum}"
+                                                WidthRequest="100"/>
+                                            <Label 
+                                                Text="{Binding Hours}"
+                                                WidthRequest="100"/>
+                                        </HorizontalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+
+
+                <VerticalStackLayout
+                    x:Name="EngineView"
+                    IsVisible="true"
+                    HorizontalOptions="Center">
+                    <Grid         
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*,*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label 
+                            Text="New Engine S/N:" Grid.Column="0" Grid.Row="0" 
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="{Binding EngineName}"/>
+
+                        <Label
+                            Text="Initial Hours: " Grid.Column="0" Grid.Row="1" 
+                                />
+                        <Entry 
+                            x:Name="EngineInitialHours"
+                            Grid.Column="1" Grid.Row="1"
+                            Text="{Binding EngineInitialHours}"/>
+                        <Button 
+                            Grid.Column="0" Grid.Row="2"
+                            Style="{StaticResource AddButtonStyle}"
+                            Clicked="AddNewEngine_Clicked"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="2"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Clicked="DeleteEngineButton_Clicked"
+                            />
+                    </Grid>
+                    <Grid
+                         RowDefinitions="*,*"
+                         ColumnDefinitions="100,100,100"
+                         WidthRequest="310"
+                         ColumnSpacing="5">
+                        <Label 
+                            Text="Engine"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="0"/>
+                        <Label 
+                            Text="Initial Hours"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="1"/>
+                        <Label 
+                            Text="Current Hours"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="2"/>
+
+
+                        <ListView x:Name="EngineListView"
+                                ItemsSource="{Binding Engines}"
+                                SelectedItem="{Binding SelectedEngine}"
+                                BackgroundColor="White" SeparatorColor="Gray"
+                                Grid.Row="1" Grid.ColumnSpan="3"                              
+                                >
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:EngineModel" >
+                                    <ViewCell>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label 
+                                                Text="{Binding Engine}"
+                                                WidthRequest="100"/>
+                                            <Label
+                                                Text="{Binding InitialHours}" 
+                                                WidthRequest="100"/>
+                                            <Label 
+                                                Text="{Binding Hours}"
+                                                WidthRequest="100"/>
+                                        </HorizontalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+
+
+                <VerticalStackLayout
+                    x:Name="ComponentsView"
+                    IsVisible="true"
+                    HorizontalOptions="Center">
+                    <Grid                       
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*,*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label 
+                            Text="Component Type:" Grid.Column="0" Grid.Row="0" 
+                                />
+
+                        <Picker
+                            Grid.Column="1" Grid.Row="0"
+                            ItemsSource="{Binding ComponentTypes}"
+                            SelectedItem="{Binding ComponentType}"
+                            />
+
+                        <Label 
+                            Text="S/N:" Grid.Column="0" Grid.Row="1" 
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="1"
+                            Text="{Binding ComponentSN}"/>
+
+
+
+                        <Button                         
+                            Grid.Column="0" Grid.Row="2"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddComponentCommand}"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="2"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteComponentCommand}"
+                            />
+                    </Grid>
+                    <Grid
+                         RowDefinitions="*,*"
+                         ColumnDefinitions="100,100"
+                         WidthRequest="205"
+                         ColumnSpacing="5">
+                        <Label 
+                            Text="Type"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="0"/>
+                        <Label 
+                            Text="SN"
+                            WidthRequest="100"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="1"/>
+                        <ListView 
+                            x:Name="ComponentsListView"     
+                            ItemsSource="{Binding Components}"
+                            SelectedItem="{Binding SelectedComponent}"
+                            BackgroundColor="White" SeparatorColor="Gray"
+                            Grid.Row="1" Grid.ColumnSpan="2"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComponentModel">
+                                    <ViewCell>
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label 
+                                                Text="{Binding Type}"
+                                                WidthRequest="100"/>
+                                            <Label
+                                                Text="{Binding SN}"
+                                                WidthRequest="100"/>
+                                        </HorizontalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+            
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="5">
+                <VerticalStackLayout
+                    x:Name="TechniciansView"
+                    IsVisible="true"
+                    HorizontalOptions="Center">
+                    <Grid
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label 
+                            Text="New Technician Name:" 
+                            Grid.Column="0" Grid.Row="0"
+                        
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="{Binding Technician}"/>
+
+                        <Button 
+                            Grid.Column="0" Grid.Row="1"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddTechnicianCommand}"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="1"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteTechnicianCommand}"
+                            />
+                    </Grid>
+                    <Grid
+                         RowDefinitions="*,*"
+                         ColumnDefinitions="150"
+                         WidthRequest="150"
+                         ColumnSpacing="5">
+                        <Label 
+                            Text="Technician Name"
+                            WidthRequest="150"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" />
+                        <ListView x:Name="TechnicianListView"
+                                ItemsSource="{Binding Technicians}"
+                                SelectedItem="{Binding SelectedTechnician}"
+                                BackgroundColor="White" SeparatorColor="Gray"
+                                Grid.Row="1"
+                                >
+                            <ListView.ItemTemplate>
+                                <DataTemplate  >
+                                    <ViewCell>
+                                        <Label 
+                                            Text="{Binding .}"
+                                            WidthRequest="150"/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                    x:Name="ChiefTechniciansView"
+                    IsVisible="true"
+                    HorizontalOptions="Center">
+                    <Grid
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label 
+                            Text="New Chief Technician Name:" Grid.Column="0" Grid.Row="0" 
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="{Binding ChiefTechnician}"/>
+
+                        <Button 
+                            Grid.Column="0" Grid.Row="1"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddChiefTechnicianCommand}"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="1"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteChiefTechnicianCommand}"
+                            />
+                    </Grid>
+                    <Grid
+                         RowDefinitions="*,*"
+                         ColumnDefinitions="150"
+                         WidthRequest="150"
+                         ColumnSpacing="5">
+                        <Label 
+                            Text="Chief Technician Name"
+                            WidthRequest="150"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="0"/>
+                        <ListView 
+                            x:Name="ChiefTechnicianListView"
+                            ItemsSource="{Binding ChiefTechnicians}"
+                            SelectedItem="{Binding SelectedChiefTechnician}"
+                            BackgroundColor="White" SeparatorColor="Gray"
+                            Grid.Row="1"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate  >
+                                    <ViewCell>
+                                        <Label 
+                                            Text="{Binding .}"
+                                            WidthRequest="150"/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+            
+                <VerticalStackLayout
+                    x:Name="ExternalPilotsView"
+                    IsVisible="true"
+                    HorizontalOptions="Center">
+                    <Grid      
+                        Style="{StaticResource FormGridStyle}"
+                        RowDefinitions="*,*"
+                        ColumnDefinitions="*,*"
+                        >
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="HorizontalOptions" Value="Center"/>
+                                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                <Setter Property="TextColor" Value="White"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label
+                            Text="New External Pilot Name:" Grid.Column="0" Grid.Row="0" 
+                                />
+                        <Entry 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="{Binding ExternalPilot}"/>
+
+                        <Button 
+                            Grid.Column="0" Grid.Row="1"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddExternalPilotCommand}"
+                            />
+                        <Button 
+                            Grid.Column="1" Grid.Row="1"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteExternalPilotCommand}"
+                            />
+                    </Grid>
+                    <Grid
+                         RowDefinitions="*,*"
+                         ColumnDefinitions="150"
+                         WidthRequest="150"
+                         ColumnSpacing="5">
+                        <Label 
+                            Text="Chief Technician Name"
+                            WidthRequest="150"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.Column="0"/>
+                        <ListView 
+                            x:Name="ExternalPilotListView"
+                            ItemsSource="{Binding ExternalPilots}"
+                            SelectedItem="{Binding SelectedExternalPilot}"
+                            BackgroundColor="White" SeparatorColor="Gray"
+                            Grid.Row="1"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate  >
+                                    <ViewCell>
+                                        <Label 
+                                        Text="{Binding .}"
+                                        WidthRequest="150"/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

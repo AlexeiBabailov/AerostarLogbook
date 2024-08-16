@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.WeightConfigurations"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:WeightConfigurationsViewModel"
+             Title="Weight Configurations">
+    <VerticalStackLayout Spacing="5" Padding="5">
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+
+            <Button 
+                x:Name="MainViewButton" 
+                Text="Main View" 
+                Clicked="MainViewButton_Clicked"
+                WidthRequest="230"
+                BackgroundColor="Purple"/>
+            <Button 
+                x:Name="AddItemButton" 
+                Text="Add New Weight Configuration" 
+                Clicked="AddItemButton_Clicked"
+                WidthRequest="230"
+                BackgroundColor="Gray"/>
+        </HorizontalStackLayout>
+        <Grid
+            x:Name="ConfigurationForm"
+            Style="{StaticResource FormGridStyle}"
+            RowDefinitions="*,*,*,*,*"
+            ColumnDefinitions="100,200,200,200"
+            >
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="HorizontalOptions" Value="Center"/>
+                    <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                    <Setter Property="VerticalTextAlignment" Value="Center"/>
+                    <Setter Property="TextColor" Value="White"/>
+                </Style>
+            </Grid.Resources>
+            <Label 
+                Text="Payload Type:" 
+                Grid.Column="0" Grid.Row="0" 
+                />
+            <Picker
+                Grid.Column="1" Grid.Row="0" 
+                ItemsSource="{Binding PayloadList}"
+                SelectedItem="{Binding PayloadType}"/>
+            
+            <Label 
+                Text="Configuration Description:"
+                Grid.Column="0" Grid.Row="1" 
+                />
+            <Editor
+                Grid.Column="1" Grid.Row="1"
+                Placeholder="Configuration Description"
+                AutoSize="TextChanges"
+                WidthRequest="200"
+                Text="{Binding Description}"/>
+            
+            <Label 
+                Text="Nose Weight:" 
+                Grid.Column="0" Grid.Row="2" 
+                />
+            <Entry
+                Grid.Column="1" Grid.Row="2"
+                Placeholder="Nose Weight"
+                WidthRequest="100"
+                Text="{Binding NoseWeight}"/>
+           
+            <Label 
+                Text="Tail Weight:" 
+                Grid.Column="0" Grid.Row="3" 
+                />
+            <Entry
+                Grid.Column="1" Grid.Row="3"
+                Placeholder="Tail Weight"
+                WidthRequest="100"
+                Text="{Binding TailWeight}"/>
+         
+            <Label 
+                Text="UAV Angle:"
+                Grid.Column="2" Grid.Row="0"
+                />
+            <Entry
+                Grid.Column="3" Grid.Row="0"
+                Placeholder="UAV Angle"
+                WidthRequest="100"
+                Text="{Binding UavAngle}"/>
+       
+            <Label 
+                Text="Configuration Date:"
+                Grid.Column="2" Grid.Row="1"
+               />
+            <DatePicker
+                    Grid.Column="3" Grid.Row="1"
+                    Date="{Binding Date}">
+                <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+            </DatePicker>
+           
+            <Label 
+                Text="Configuration Technician:" 
+                Grid.Column="2" Grid.Row="2" 
+                />
+            <Picker
+                Grid.Column="3" Grid.Row="2" 
+                ItemsSource="{Binding TechnicianList}"
+                SelectedItem="{Binding Technician}"/>
+         
+            <Label 
+                Text="Configuration Chief Technician:" 
+                Grid.Column="2" Grid.Row="3" 
+                />
+            <Picker
+                Grid.Column="3" Grid.Row="3" 
+                ItemsSource="{Binding ChiefTechnicianList}"
+                SelectedItem="{Binding ChiefTechnician}"/>
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="5"
+                Grid.ColumnSpan="4"
+                Grid.Column="0" Grid.Row="4">
+                <Button 
+                    x:Name="Form_AddButton"
+                    IsVisible="False"
+                    Style="{StaticResource AddButtonStyle}"
+                    Command="{Binding AddConfigurationCommand}"
+                    />
+                <Button  
+                    x:Name="Form_UpdateButton"
+                    IsVisible="False"
+                    Style="{StaticResource UpdateButtonStyle}"
+                    Command="{Binding UpdateConfigurationDetailsCommand}"
+                    />
+                <Button 
+                    x:Name="Form_DeleteButton"
+                    IsVisible="False"
+                    Style="{StaticResource DeleteButtonStyle}"
+                    Command="{Binding DeleteConfigurationCommand}"
+                    />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <Grid
+            RowDefinitions="*,*"
+            ColumnDefinitions="100,200,80,80,80,100,100,100"
+            WidthRequest="790"
+            ColumnSpacing="5">
+            <Label 
+                Text="Payload Type" 
+                WidthRequest="100"
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="0"/>
+            <Label 
+                Text="Configuration Description" 
+                WidthRequest="200" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="1"/>
+            <Label 
+                Text="Nose Weight"
+                WidthRequest="80" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="2"/>
+            <Label
+                Text="Tail Weight" 
+                WidthRequest="80" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="3"/>
+            <Label 
+                Text="UAV Angle"
+                WidthRequest="80" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="4"/>
+            <Label 
+                Text="Configuration Date" 
+                WidthRequest="100"
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="5"/>
+            <Label 
+                Text="Configuration Technician"
+                WidthRequest="100" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="6"/>
+            <Label 
+                Text="Configuration Chief Technician"
+                WidthRequest="100" 
+                Style="{StaticResource ListView_LabelStyle}"
+                Grid.Row="0" Grid.Column="7"/>
+
+            <ListView 
+            x:Name="ConfList"          
+            ItemsSource="{Binding Configurations}"
+            SelectedItem="{Binding SelectedConf}"
+            ItemSelected="ConfigurationsListView_ItemSelected"
+            HorizontalOptions="Center" 
+            Grid.Row="1"
+            Grid.ColumnSpan="8">
+            <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:WeightConfigurationsModel">
+                        <ViewCell>
+                            <Grid 
+                            ColumnSpacing="5" 
+                            ColumnDefinitions="100, 200, 80, 80, 80, 100, 100, 100"  
+                            HorizontalOptions="Center"
+                            Margin="2">
+                                <Frame 
+                                Grid.Column="0" Grid.ColumnSpan="9" 
+                                Style="{StaticResource FrameInListView}"
+                                />
+                                <Label 
+                                Grid.Column="0"
+                                Text="{Binding PayloadType}"/>
+                                <Label
+                                Grid.Column="1"
+                                Text="{Binding Description}"/>
+                                <Label 
+                                Grid.Column="2"
+                                Text="{Binding NoseWeight}"/>
+                                <Label
+                                Grid.Column="3"
+                                Text="{Binding TailWeight}"/>
+                                <Label 
+                                Grid.Column="4"
+                                Text="{Binding UavAngle}"/>
+                                <Label
+                                Grid.Column="5"
+                                Text="{Binding Date}"/>
+                                <Label
+                                Grid.Column="6"
+                                Text="{Binding Technician}"/>
+                                <Label 
+                                Grid.Column="7"
+                                Text="{Binding ChiefTechnician}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

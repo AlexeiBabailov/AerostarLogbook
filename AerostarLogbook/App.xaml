@@ -1,0 +1,119 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AerostarLogbook"
+             x:Class="AerostarLogbook.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TopButtonStyle" TargetType="Button">
+            </Style>
+            <Style x:Key="FormGridStyle" TargetType="Grid">
+                <Setter Property="BackgroundColor" Value="#47566D"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="ColumnSpacing" Value="2"/>
+                <Setter Property="RowSpacing" Value="2"/>
+                <Setter Property="Padding" Value="4"/>
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+                <Setter Property="MinimumDate" Value="1/1/2020"/>
+                <Setter Property="MaximumDate" Value="12/31/2025"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Key="TimePickerStyle" TargetType="TimePicker">
+                <Setter Property="Format" Value="HH:mm"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="PickerStyle" TargetType="Picker">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="EditorStyle" TargetType="Editor">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="AutoSize" Value="TextChanges"/>
+            </Style>
+
+            <Style x:Key="AddButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#66BB6A"/>
+                <Setter Property="Text" Value="Add"/>
+                <Setter Property="WidthRequest" Value="150"/>
+            </Style>
+            <Style x:Key="UpdateButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#FFF59D"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="Text" Value="Update"/>
+                <Setter Property="WidthRequest" Value="150"/>
+            </Style>
+            <Style x:Key="DeleteButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#E57373"/>
+                <Setter Property="Text" Value="Delete"/>
+                <Setter Property="WidthRequest" Value="150"/>
+            </Style>
+            <Style x:Key="FrameInForm" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="LightSkyBlue"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            <Style x:Key="FrameInListView" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#267AA9"/>
+                <Setter Property="Opacity" Value="0.3"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="CornerRadius" Value="2"/>
+            </Style>
+            <Style x:Key="ButtonMainPage" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#47566D"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="BorderColor" Value="#44859B"/>
+                <Setter Property="BorderWidth" Value="3"/>
+                <Setter Property="CornerRadius" Value="2"/>
+                <Setter Property="FontFamily" Value="Segoe UI" />
+            </Style>
+            <Style x:Key="LabelStyle_Grid" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+            </Style>
+            <Style x:Key="Button_TopManu" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#47566D"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="WidthRequest" Value="280" />
+            </Style>
+            <Style x:Key="ListView_LabelStyle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="#267AA9"/>
+            </Style>
+
+
+            <Style TargetType="DatePicker" BasedOn="{StaticResource DatePickerStyle}"/>
+            <Style TargetType="TimePicker" BasedOn="{StaticResource TimePickerStyle}"/>
+            <Style TargetType="Label" BasedOn="{StaticResource LabelStyle}"/>
+            <Style TargetType="Picker" BasedOn="{StaticResource PickerStyle}"/>
+            <Style TargetType="Entry" BasedOn="{StaticResource EntryStyle}"/>
+            <Style TargetType="Editor" BasedOn="{StaticResource EditorStyle}"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

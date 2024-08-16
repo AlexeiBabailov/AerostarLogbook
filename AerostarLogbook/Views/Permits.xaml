@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.Permits"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             xmlns:converters="clr-namespace:AerostarLogbook.Resources.Converters"
+             x:DataType="vm:PermitsViewModel"
+             Title="Permits">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringEmptyToColorConverter x:Key="StringEmptyToColorConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView Orientation="Both">
+        
+    
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" >
+                <Button
+                    x:Name="GeneralButton"
+                    Style="{StaticResource Button_TopManu}"
+                    Text="Main View" 
+                    Clicked="PermitsGeneralClicked"
+                    BackgroundColor="#267AA9"/>
+                <Button 
+                    x:Name="OpenButton"
+                    Style="{StaticResource Button_TopManu}"
+                    Text="Open a new Permit" 
+                    Clicked="OpenPermitClicked"
+                    />
+                <Button 
+                    x:Name="CloseButton"
+                    Style="{StaticResource Button_TopManu}"
+                    Text="Close a permit" 
+                    Clicked="ClosePermitClicked"
+                    />
+            </HorizontalStackLayout>
+
+            <Grid 
+                x:Name="OpenForm" 
+                IsVisible="False"
+                Style="{StaticResource FormGridStyle}"
+                ColumnDefinitions="200,500"
+                RowDefinitions="*,*,*,*,*,*,*">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="0" 
+                    />
+                <DatePicker 
+                    Date="{Binding OpenDate}"
+                    Grid.Column="1" Grid.Row="0">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                    Text="BPR:" 
+                    Grid.Column="0" Grid.Row="1" 
+                    />
+                <Entry 
+                    Text="{Binding OpenBPR}"
+                    Grid.Column="1" Grid.Row="1" 
+                    WidthRequest="500"/>
+            
+                <Label 
+                    Text="Description:" 
+                    Grid.Column="0" Grid.Row="2" 
+                    />
+                <Entry 
+                    Text="{Binding Description}"
+                    Grid.Column="1" Grid.Row="2" 
+                    WidthRequest="500"/>
+
+                <Label 
+                    Text="Expiry Date or Max Hours:" 
+                    Grid.Column="0" Grid.Row="3" 
+                    />
+                <Entry 
+                    Text="{Binding ExpiryDateOrMaxHours}"
+                    Grid.Column="1" Grid.Row="3" 
+                    WidthRequest="500"/>
+
+                <Label 
+                    Text="Approved By:" 
+                    Grid.Column="0" Grid.Row="4" 
+                    />
+                <Entry 
+                    Text="{Binding ApprovedBy}"
+                    Grid.Column="1" Grid.Row="4" 
+                    WidthRequest="500"/>
+
+                <Label 
+                    Text="Chief Technician:" 
+                    Grid.Column="0" Grid.Row="5" 
+                    />
+                <Picker 
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding OpenChiefTechnician}"
+                    Grid.Column="1" Grid.Row="5" 
+                    />
+                <HorizontalStackLayout
+                    Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5"
+                    >
+                    <Button 
+                        x:Name="Form_AddButton"
+                        Command="{Binding AddPermitCommand}" 
+                        Style="{StaticResource AddButtonStyle}"
+                        Clicked="Form_Button_Clicked"
+                        Text="Open Permit"
+                        />
+                    <Button
+                        x:Name="Form_UpdateButton"
+                        IsVisible="false"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdatePermitDetailsCommand}"
+                        Clicked="Form_Button_Clicked"
+                        />
+                    <Button
+                        x:Name="OpenForm_DeleteButton"
+                        IsVisible="false"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeletePermitCommand}"
+                        Clicked="Form_Button_Clicked"
+                        />
+                </HorizontalStackLayout>
+            
+            </Grid>
+
+            <Grid 
+                x:Name="CloseForm" 
+                IsVisible="False"
+                Style="{StaticResource FormGridStyle}"
+                ColumnDefinitions="200,500"
+                RowDefinitions="*,*,*,*">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="0" 
+                    />
+                <DatePicker 
+                    Date="{Binding CloseDate}"
+                    Grid.Column="1" Grid.Row="0">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                    Text="BPR:" 
+                    Grid.Column="0" Grid.Row="1" 
+                     />
+                <Entry 
+                    Text="{Binding CloseBPR}" 
+                    Grid.Column="1" Grid.Row="1" 
+                    WidthRequest="500"/>
+
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="2" 
+                     />
+                <Picker 
+                    ItemsSource="{Binding TechnicianList}"
+                    SelectedItem="{Binding CloseTechnician}" 
+                    Grid.Column="1" Grid.Row="2" 
+                    />
+                <HorizontalStackLayout
+                    Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                    Spacing="5"
+                    HorizontalOptions="Center">
+                    <Button
+                        x:Name="FormCloseButton"
+                        Command="{Binding ClosePermitCommand}" 
+                        Style="{StaticResource AddButtonStyle}" 
+                        Text="Close permit"/>
+                    <Button
+                        x:Name="CloseForm_DeleteButton"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeletePermitCommand}"
+                        Text="Delete permit" 
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                RowDefinitions="*,*,*"
+                ColumnDefinitions="80, 80, 200, 100, 100, 100, 80, 80, 100"
+                WidthRequest="960"
+                ColumnSpacing="5"
+                RowSpacing="5">
+                <Label 
+                    Text="Open" 
+                    WidthRequest="695"
+                    FontAttributes="Bold" 
+                    FontSize="32" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"
+                    Grid.ColumnSpan="6"/>
+                <Label 
+                    Text="Close" 
+                    WidthRequest="270"
+                    FontAttributes="Bold" 
+                    FontSize="32"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="6"
+                    Grid.ColumnSpan="3"/>
+
+                <Label 
+                    Text="Date" 
+                    WidthRequest="80"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="0"/>
+                <Label 
+                    Text="BPR" 
+                    WidthRequest="80"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="1"/>
+                <Label 
+                    Text="Description"
+                    WidthRequest="200" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="2"/>
+                <Label 
+                    Text="Expiry Date Or Max Hours" 
+                    WidthRequest="100" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="3"/>
+                <Label 
+                    Text="Approved By"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="4"/>
+                <Label 
+                    Text="Chief Technician" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="5"/>
+                <Label 
+                    Text="Close Date"
+                    WidthRequest="80"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="6"/>
+                <Label 
+                    Text="Close BPR" 
+                    WidthRequest="80" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="7"/>
+                <Label 
+                    Text="Technician" 
+                    WidthRequest="100" 
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="1" Grid.Column="8"/>
+                <ListView x:Name="PermitsListView"
+                      ItemsSource="{Binding Permits}"
+                      SelectedItem="{Binding SelectedPermit}"
+                      ItemSelected="PermitsListView_ItemSelected"
+                      HorizontalOptions="Center"
+                      Grid.Row="2"
+                      Grid.ColumnSpan="9">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:PermitsModel" >
+                            <ViewCell>
+                                <Grid 
+                                ColumnSpacing="5"
+                                ColumnDefinitions="80, 80, 200, 100, 100, 100, 80, 80, 100"  
+                                HorizontalOptions="Center"
+                                Margin="2">
+                                    <Frame 
+                                    Grid.Column="0" Grid.ColumnSpan="9" 
+                                    Style="{StaticResource FrameInListView}"                                
+                                    BackgroundColor="{Binding CloseTechnician, 
+                                    Converter={StaticResource StringEmptyToColorConverter}}">
+                                    </Frame>
+
+
+                                    <Label 
+                                    Grid.Column="0" 
+                                    Text="{Binding OpenDate} " 
+                                    FontSize="11"/>
+                                    <Label 
+                                    Grid.Column="1" 
+                                    Text="{Binding OpenBPR}" />
+                                    <Label
+                                    Grid.Column="2"
+                                    Text="{Binding Description}" />
+                                    <Label 
+                                    Grid.Column="3" 
+                                    Text="{Binding ExpiryDateOrMaxHours}" />
+                                    <Label 
+                                    Grid.Column="4" 
+                                    Text="{Binding ApprovedBy}" />
+                                    <Label
+                                    Grid.Column="5" 
+                                    Text="{Binding OpenChiefTechnician}" />
+                                    <Label 
+                                    Grid.Column="6" 
+                                    Text="{Binding CloseDate}" 
+                                    FontSize="11"/>
+                                    <Label
+                                    Grid.Column="7" 
+                                    Text="{Binding CloseBPR}" />
+                                    <Label 
+                                    Grid.Column="8"
+                                    Text="{Binding CloseTechnician}" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

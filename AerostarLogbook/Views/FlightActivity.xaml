@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.FlightActivity"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:FlightActivityViewModel"
+             Title="FlightActivity">
+    <ScrollView x:Name="mainScrollView" Orientation="Both">
+        <VerticalStackLayout Spacing="5" Padding="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="GeneralButton" 
+                    Text="Main View" 
+                    Clicked="FlightActivityGeneral_Clicked" 
+                    WidthRequest="280"
+                    BackgroundColor="#267AA9"
+                    Style="{StaticResource Button_TopManu}"
+                    />
+                <Button 
+                    x:Name="NewFlightButton" 
+                    Text="Open a new Flight Activity" 
+                    Clicked="OpenNewFlightActivity_Clicked"
+                    WidthRequest="280"
+                    Style="{StaticResource Button_TopManu}"
+                    />
+                <Button 
+                    x:Name="UpdateDIButton"
+                    Text="Update DI performed"
+                    Clicked="UpdateDIClicked"
+                    WidthRequest="280"
+                    Style="{StaticResource Button_TopManu}"
+                    />
+            </HorizontalStackLayout>
+        
+       
+
+
+            <Grid
+                Style="{StaticResource FormGridStyle}"
+                x:Name="NewFlightActivityForm"
+                IsVisible="False"
+                HeightRequest="400"
+                BackgroundColor="LightSteelBlue"
+                RowDefinitions="*,*,*,*,*,*,*"
+                ColumnDefinitions="100,170,100,150,100,150,100,350">
+                <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="1"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="1"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="4" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource FrameInForm}"/>
+                <Frame Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="3"  Style="{StaticResource FrameInForm}"/>
+
+                <Label 
+                    Text="Flight Date"
+                    Grid.Column="0" Grid.Row="0"/>
+                <DatePicker
+                    Grid.Row="0" Grid.Column="1"
+                    Date="{Binding FlightDate}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label                        
+                    Text="Flight Purpose"
+                    Grid.Column="0" Grid.Row="1"/>
+                <Picker
+                    Grid.Column="1" Grid.Row="1"
+                    ItemsSource="{Binding FlightPurposeList}"                          
+                    SelectedItem="{Binding FlightPurpose}"/>
+                
+                <Label 
+                    Text="Open Permits"
+                    Grid.Column="0" Grid.Row="2"/>
+                <CheckBox
+                    IsChecked="{Binding OpenPermitsForUI}"
+                    HorizontalOptions="Center" 
+                    Grid.Column="1" Grid.Row="2"            
+                    />
+
+                <Label 
+                    Text="Refueling"
+                    Grid.Column="0" Grid.Row="3" Grid.RowSpan="2"/>
+                <VerticalStackLayout
+                    Grid.Column="1" Grid.Row="3" Grid.RowSpan="2"
+                    VerticalOptions="Center"
+                    >
+                    <Entry 
+                        Placeholder="Total" 
+                        Text="{Binding TotalRefueling}" 
+                        WidthRequest="80"/>
+                    <Picker 
+                        ItemsSource="{Binding TechniciansList}"                          
+                        SelectedItem="{Binding RefuelName}"/>
+                    <DatePicker
+                        Date="{Binding FuelExpDate}">
+                        <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                    </DatePicker>
+                </VerticalStackLayout>
+                
+                <Label 
+                    Text="Configuration"
+                    Grid.Column="0" Grid.Row="5" Grid.RowSpan="2"/>
+                
+                <VerticalStackLayout
+                    Grid.Column="1" Grid.Row="5" Grid.RowSpan="2"
+                    VerticalOptions="Center" HorizontalOptions="Center"
+                    Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label
+                            Text="Payload:"/>
+                        <Picker 
+                            ItemsSource="{Binding PayloadList}"                              
+                            SelectedItem="{Binding Payload}"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label
+                            Text="Weights:"/>
+                        <Entry 
+                            Placeholder="weight" 
+                            Text="{Binding Weight}" 
+                            WidthRequest="80"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout 
+                    Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Spacing="5">
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                        <VerticalStackLayout>
+                            <Label
+                        Text="Engine" FontAttributes="Bold"/>
+                            <Picker 
+                            ItemsSource="{Binding EngineList}"
+                            SelectedItem="{Binding SelectedEngine}">
+                                <Picker.ItemDisplayBinding>
+                                    <Binding Path="Engine"/>
+                                </Picker.ItemDisplayBinding>
+                            </Picker>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label 
+                                Text="Hours" FontAttributes="Bold"  />
+                            <Label
+                                Text="{Binding EngineHours}"/>
+
+                        </VerticalStackLayout>
+
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <Label 
+                    Text="Next Maintenance"
+                    Grid.Column="2" Grid.Row="1" />
+                <Entry 
+                    Placeholder="Next Maintenance"
+                    Grid.Column="3" Grid.Row="1" 
+                    Text="{Binding EngineNextMaintenance}"
+                    HeightRequest="25"
+                    />
+
+                <Label 
+                    Text="Drain and Sample"
+                    Grid.Column="2" Grid.Row="2" 
+                    />
+                <Entry 
+                    Grid.Column="3" Grid.Row="2"   
+                    Placeholder="Drain and Sample"
+                    Text="{Binding DrainAndSample}"
+                    HeightRequest="35"/>
+                
+                <Label Text="Preflight"
+                    Grid.Column="2" Grid.Row="3" Grid.RowSpan="2"
+                    />
+                <VerticalStackLayout
+                    Grid.Column="3" Grid.Row="3" Grid.RowSpan="2"
+                    VerticalOptions="Center" HorizontalOptions="Center"
+                    Spacing="10">
+                    <Entry 
+                        Placeholder="UAV Closure" 
+                        Text="{Binding PrefUavClosure}"/>
+                    <Entry 
+                        Placeholder="UAV-GCS" 
+                        Text="{Binding Uavgcs}"/>
+                </VerticalStackLayout>
+                
+                <Label 
+                    Text="Arresting Gear"
+                    Grid.Column="2" Grid.Row="5" Grid.RowSpan="2"
+                     />
+                <VerticalStackLayout
+                    Grid.Column="3" Grid.Row="5" Grid.RowSpan="2"
+                    VerticalOptions="Center" HorizontalOptions="Center"
+                    Spacing="10">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label 
+                            Text="Deployed?"/>
+                        <Entry
+                            Placeholder="Deployed"
+                            Text="{Binding ArrestDeployed}"
+                            />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label 
+                            Text="Direction"/>
+                        <Picker 
+                            ItemsSource="{Binding CableDirList}"                          
+                            SelectedItem="{Binding ArrestDir}"/>
+                    </HorizontalStackLayout>
+                    
+                </VerticalStackLayout>
+                
+                <Label 
+                    Text="Chief Technician"
+                    Grid.Column="4" Grid.Row="0"
+                     />
+                <Picker
+                    ItemsSource="{Binding ChiefTechnicianList}"
+                    Grid.Column="5" Grid.Row="0"
+                    SelectedItem="{Binding ChiefTechnician}"
+                     />
+
+                <Label 
+                    Text="External Pilot"
+                    Grid.Column="4" Grid.Row="1" Grid.RowSpan="2"
+                     />
+                <Picker 
+                    Grid.Column="5" Grid.Row="1"
+                    ItemsSource="{Binding ExternalPilotList}"                          
+                    SelectedItem="{Binding ExPilotUavCheck}"
+                     />
+                <Entry 
+                    Grid.Column="5" Grid.Row="2"
+                    Text="{Binding ExPilotSteerCheck}"
+                    HeightRequest="35"/>
+
+                <VerticalStackLayout
+                    Grid.Column="4" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                    VerticalOptions="Center" Spacing="5">
+                    <Label 
+                        Text="RPM" FontAttributes="Bold"
+                        Padding="2"
+                         />
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                        <Label
+                            Text="WOT"
+                            />
+                        <Entry 
+                            Placeholder="MAX (W.O.T)" 
+                            Text="{Binding RpmMax}"
+                            />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                        <Label
+                            Text="Idle THR %"
+                            />
+                        <Entry 
+                            Placeholder="MIN (IDLE)" 
+                            Text="{Binding RpmMin}"
+                            />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <VerticalStackLayout
+                    Grid.Column="6" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center" Spacing="10" Padding="3">
+                    <Label 
+                        Text="Flight Schedule"
+                        FontAttributes="Bold"
+                        />
+                    <HorizontalStackLayout >
+                        <Label Text="TakeOff:" FontAttributes="Bold" VerticalOptions="Center"/>
+                        <Label Text="." TextColor="LightBlue"/>
+                        <TimePicker                           
+                            Time="{Binding Startup}"
+                            />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout >
+                        <Label Text="Landing:" FontAttributes="Bold" VerticalOptions="Center"/>
+                        <Label Text="." TextColor="LightBlue"/>
+                        <TimePicker
+                            Time="{Binding Shutdown}"
+                            />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout 
+                        Spacing="5">
+                        <Label 
+                            Text="Total:" 
+                            FontAttributes="Bold"/>
+                        <Label
+                            Text="{Binding TotalTime}"
+                            />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                    Grid.Column="6" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center">
+
+                    <Label 
+                        Text="Landing"
+                        FontAttributes="Bold"
+                        FontSize="20"
+                         />
+                    <Grid
+                        RowDefinitions="*,*"
+                        ColumnDefinitions="*,*"
+                        RowSpacing="10">
+                        <HorizontalStackLayout Spacing="5" Grid.Row="0" Grid.Column="0">
+                            <Label 
+                                 Text="Fuel At Landing:" 
+                                 FontAttributes="Bold" 
+                                 VerticalOptions="Center"
+                                  />
+                            <Entry 
+                                 Placeholder="Fuel at Landing"
+                                  
+                                 Text="{Binding FuelAtLanding}"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="5" Grid.Row="1" Grid.Column="0" >
+                            <Label 
+                                 Text="TouchDowns:" 
+                                 FontAttributes="Bold" 
+                                 VerticalOptions="Center"
+                                  />
+                            <Entry 
+                                 Placeholder="Touchdowns"
+                                 Text="{Binding TouchDowns}"/>
+                        </HorizontalStackLayout>
+                        <VerticalStackLayout Spacing="5" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                            <Label 
+                                 Text="After Landing Notes:"
+                                  />
+                            <Entry 
+                                 Placeholder="After Landing"
+                                 Text="{Binding AfterLanding}"
+                                 HeightRequest="50"
+                                 WidthRequest="180"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                    Grid.Column="4" Grid.Row="5" Grid.ColumnSpan="4" Grid.RowSpan="2"
+                    HorizontalOptions="Center">
+
+                    <Label 
+                        Text="Flight Summary"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                         />
+                    <Grid
+                        RowDefinitions="*,*"
+                        ColumnDefinitions="*,*,*"
+                        RowSpacing="10"
+                        ColumnSpacing="50"
+                        HorizontalOptions="CenterAndExpand">
+                        <Label 
+                            Grid.Column="0" Grid.Row="0"
+                            Text="UAV Hours:" 
+                            />
+                        <Entry 
+                            Grid.Column="0" Grid.Row="1"
+                            Placeholder="UAV Hours" 
+                            Text="{Binding UavHours}"
+                            />
+                        <Label 
+                            Grid.Column="1" Grid.Row="0"
+                            Text="Engine Hours After Flight:" 
+                            VerticalOptions="Center"
+                            />
+                        <Label 
+                            Grid.Column="1" Grid.Row="1"
+                            Text="{Binding EngineHoursAfterFlight}"
+                            FontSize="20"
+                            />
+                        <Label
+                            Grid.Column="2" Grid.Row="0"
+                            Text="TouchDowns:" 
+                            VerticalOptions="Center"
+                            />
+                        <Label
+                            Grid.Column="2" Grid.Row="1"
+                            Text="{Binding TouchDowns}" 
+                            FontSize="20"
+                            />
+                    </Grid>
+                </VerticalStackLayout>
+
+            </Grid>
+
+
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="5">
+                <Button
+                    x:Name="Form_AddButton"
+                    IsVisible="false"
+                    Style="{StaticResource AddButtonStyle}"
+                    Command="{Binding AddFlightCommand}"
+                    />
+                <Button
+                    x:Name="Form_UpdateButton"
+                    IsVisible="false"
+                    Style="{StaticResource UpdateButtonStyle}"
+                    Command="{Binding UpdateFlightActivityCommand}"
+                    
+                    />
+                <Button
+                    x:Name="Form_DeleteButton"
+                    IsVisible="false"
+                    Style="{StaticResource DeleteButtonStyle}"
+                    Command="{Binding DeleteFlightCommand}"
+                   
+
+                    />
+            </HorizontalStackLayout>
+            <Grid
+                x:Name="DIForm"
+                IsVisible="false"
+                Style="{StaticResource FormGridStyle}"
+                HeightRequest="250" WidthRequest="350"
+                RowDefinitions="50,*,40,*,*"
+                ColumnDefinitions="80,*"
+                >
+                <Label 
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="0" 
+                     />
+                <DatePicker
+                    Grid.Column="1" Grid.Row="0"
+                     
+                    Date="{Binding InspectionDate}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Label 
+                    Text="Time:" 
+                    Grid.Column="0" Grid.Row="1" 
+                     />
+                <TimePicker
+                    x:Name="timePicker" 
+                    Grid.Column="1" Grid.Row="1"
+                     
+                    Time="{Binding InspectionTime}"/>
+
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="2" 
+                     />
+                <Picker 
+                    Grid.Column="1" Grid.Row="2"
+                    ItemsSource="{Binding TechniciansList}"                          
+                    SelectedItem="{Binding InspectionTechnician}"
+                    HorizontalOptions="Center"/>
+
+                <Button 
+                    Text="Update Inspection"
+                    Grid.ColumnSpan="2"
+                    Grid.Column="0" Grid.Row="3"
+                    Style="{StaticResource AddButtonStyle}"
+                    Clicked="AddInspection_Clicked"
+                    Command="{Binding UpdateInspectionCommand}"
+                    />
+                <Button
+                    Text="Show/Hide DI list"
+                    Grid.ColumnSpan="2"
+                    Grid.Column="0" Grid.Row="4"
+                    Clicked="ShowOrHideButton_Clicked"/>
+            </Grid>
+
+            <ScrollView
+                x:Name="Scroll"
+                WidthRequest="280"
+                HeightRequest="200"        
+                IsVisible="False">
+                <ListView 
+                    x:Name="DIList"
+                    
+                    ItemsSource="{Binding Inspections}"
+                    HorizontalOptions="Center"    
+                    >
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:DailyInspection">
+                            <ViewCell>
+                                <HorizontalStackLayout Padding="5" Spacing="5" HorizontalOptions="Center">
+                                    <Label 
+                                        Text="{Binding InspectionDate}" 
+                                        WidthRequest="80"/>
+                                    <Label 
+                                        Text="{Binding InspectionTime}" 
+                                        WidthRequest="80"/>
+                                    <Label 
+                                        Text="{Binding InspectionTechnician}" 
+                                        WidthRequest="80"/>
+                                </HorizontalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Header>
+                        <HorizontalStackLayout Spacing="5" Padding="5" BackgroundColor="White" HorizontalOptions="Center">
+                            <Label 
+                                Text="Date" 
+                                WidthRequest="80" 
+                                BackgroundColor="#e0e0e0"/>
+                            <Label 
+                                Text="Time" 
+                                WidthRequest="80"
+                                BackgroundColor="#e0e0e0"/>
+                            <Label
+                                Text="Technician" 
+                                WidthRequest="80" 
+                                BackgroundColor="#e0e0e0"/>
+                        </HorizontalStackLayout>
+
+                    </ListView.Header>
+                </ListView>
+            </ScrollView>
+            <Label
+                x:Name="DI"
+                Padding="5"
+                Text="DI is Valid"
+                IsVisible="{Binding IsValid}"
+                HorizontalTextAlignment="Center"
+                VerticalOptions="CenterAndExpand"
+                FontSize="32"
+                WidthRequest="300"
+                BackgroundColor="Green"
+                FontAttributes="Italic"
+                
+                    />
+            <Label
+                x:Name="DINotValid"
+                Padding="5"
+                Text="DI is not Valid"
+                IsVisible="{Binding IsNotValid}"
+                HorizontalTextAlignment="Center"
+                VerticalOptions="CenterAndExpand"
+                FontSize="32"
+                WidthRequest="300"
+                BackgroundColor="Red"
+                FontAttributes="Italic"
+                
+                />
+
+            <ListView
+                x:Name="FlightListView"
+                ItemsSource="{Binding Flights}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedFlight}"
+                ItemSelected="FlightListView_ItemSelected"
+                WidthRequest="1085"
+                RowHeight="200">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:FlightActivityModel">
+
+                        <ViewCell>
+
+
+                            <HorizontalStackLayout Padding="5" Margin="5" >
+                                <VerticalStackLayout Margin="2">
+                                    <Label 
+                                        Text="{Binding FlightPurpose}" 
+                                        FontSize="28" 
+                                        FontAttributes="Bold"/>
+                                    <Label 
+                                        Text="{Binding FlightDate}" 
+                                        FontSize="Subtitle"  />
+                                    <HorizontalStackLayout Grid.Row="2" Grid.Column="0" HorizontalOptions="Center">
+                                        <Label 
+                                            Text="{Binding Startup}" />
+                                        <Label
+                                            Text="-"/>
+                                        <Label
+                                            Text="{Binding Shutdown}" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Text="Chief Technician:" 
+                                        FontAttributes="Bold" />
+                                    <Label 
+                                        Text="{Binding ChiefTechnician}" 
+                                        TextColor="Purple" 
+                                        FontSize="26"/>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Margin="2">
+                                    <Label 
+                                        Text="."
+                                        TextColor="White"/>
+                                    <HorizontalStackLayout 
+                                        Grid.Row="0" Grid.Column="0" 
+                                        HorizontalOptions="Center">
+                                        <Label 
+                                            Text="Payload:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="." 
+                                            TextColor="White"/>
+                                        <Label 
+                                            Text="{Binding Payload}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        Grid.Row="1" 
+                                        Grid.Column="0" 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="weights added:"
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding Weight}"
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        Grid.Row="1" Grid.Column="0" 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Open Permits:"
+                                            FontAttributes="Bold"/>
+                                        <Label Text="false" TextColor="Red">
+                                            <Label.Triggers>
+                                                <!-- Trigger to change text to 'true' when the bound integer value is 1 -->
+                                                <DataTrigger TargetType="Label" Binding="{Binding OpenPermits}" Value="1">
+                                                    <Setter Property="Text" Value="true"/>
+                                                </DataTrigger>
+                                                <!-- Trigger to change text to 'false' when the bound integer value is not 1 -->
+                                                <DataTrigger TargetType="Label" Binding="{Binding OpenPermits}" Value="0">
+                                                    <Setter Property="Text" Value="false"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        Grid.Row="2" Grid.Column="0" 
+                                        HorizontalOptions="Center" 
+                                        Spacing="5">
+                                        <Label
+                                            Text="Total Refueling:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding TotalRefueling}" 
+                                            TextColor="Purple"/>
+                                        <Label
+                                            Text="By"/>
+                                        <Label
+                                            Text="{Binding RefuelName}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        Grid.Row="3" Grid.Column="0" 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="Fuel Exp Date:" 
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding FuelExpDate}"
+                                            TextColor="Red"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        Grid.Row="4" Grid.Column="0"
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="Fuel At landing:" 
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding FuelAtLanding}" 
+                                            TextColor="Red"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Margin="2">
+                                    <HorizontalStackLayout HorizontalOptions="Center" >
+                                        <Label 
+                                            Text="Engine" 
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center"/>
+                                        <Image
+                                              Source="Engine.png"
+                                              SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                                              HeightRequest="50"
+                                              WidthRequest="50"
+                                              VerticalOptions="StartAndExpand"
+                                              HorizontalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout  
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="S/N:" 
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding EngineSN}" 
+                                            TextColor="DarkSlateGrey"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="RPM:" 
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding RpmMin}" 
+                                            TextColor="DarkSlateGrey"/>
+                                        <Label
+                                            Text="%"/>
+                                        <Label 
+                                            Text="(3200)" />
+                                        <Label 
+                                            Text="-" 
+                                            TextColor="DarkSlateGrey"/>
+                                        <Label 
+                                            Text="{Binding RpmMax}"
+                                            TextColor="DarkSlateGrey"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="Engine Hours:" 
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding EngineHours}"
+                                            TextColor="DarkSlateGrey"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Engine Next Maintenance:"
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding EngineNextMaintenance}
+                                            " TextColor="DarkSlateGrey"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Drain And Sample:" 
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding DrainAndSample}" 
+                                            TextColor="DarkSlateGrey"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Margin="2">
+                                    <Label 
+                                        Text="Preflight" 
+                                        FontSize="20" 
+                                        FontAttributes="Bold"
+                                        TextColor="MediumPurple"/>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="UAV closure:"
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding PrefUavClosure}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="GCS:"
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding Uavgcs}"
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="External Pilot Checks:"
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding ExPilotUavCheck}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Steer Check:" 
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding ExPilotSteerCheck}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Arresting Gear Deployed:" 
+                                            FontAttributes="Bold"/>
+                                        <Label
+                                            Text="{Binding ArrestDeployed}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Direction:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding ArrestDir}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Margin="2">
+                                    <Label 
+                                        Text="Summary" 
+                                        FontSize="20" FontAttributes="Bold"
+                                        TextDecorations="Underline" 
+                                        TextColor="MediumPurple"/>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Fuel At Landing:" />
+                                        <Label 
+                                            Text="{Binding FuelAtLanding}"
+                                            TextColor="Purple" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Touchdowns:" 
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding TouchDowns}"
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="UAV Hours:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding UavHours}" 
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label 
+                                            Text="Engine Hours A/F:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding EngineHoursAfterFlight}"
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout 
+                                        HorizontalOptions="Center"
+                                        Spacing="5">
+                                        <Label
+                                            Text="After Flight:"
+                                            FontAttributes="Bold"/>
+                                        <Label 
+                                            Text="{Binding AfterLanding}"
+                                            TextColor="Purple"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                            
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.BiWeekly"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:BiWeeklyViewModel"
+             Title="General Periodic Maintenance - Bi-Weekly">
+    <ScrollView Orientation="Vertical">
+        
+    
+        <VerticalStackLayout  Spacing="5" Padding="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="MainViewButton" 
+                    Text="Main View" 
+                    Clicked="MainViewButton_Clicked"
+                    WidthRequest="180"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="AddItemButton" 
+                    Text="Add New Bi-Weekly" 
+                    Clicked="AddItemButton_Clicked"
+                    WidthRequest="180"
+                    BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+
+            <Grid
+                x:Name="BiweeklyForm"
+                Style="{StaticResource FormGridStyle}"
+                IsVisible="False"
+                RowDefinitions="*,*,*,*"
+                ColumnDefinitions="*,*"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Maintenance Done On Date:" 
+                    Grid.Column="0" Grid.Row="0" 
+                     />
+                <DatePicker
+                    Grid.Column="1" Grid.Row="0"
+                    Date="{Binding DoneOnDate}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                    Text="Expiry Date:"
+                    Grid.Column="0" Grid.Row="1" 
+                    />
+                <DatePicker
+                    Grid.Column="1" Grid.Row="1"
+                    Date="{Binding ExpiryDate}" >
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="2"/>
+                <Picker
+                    Grid.Column="1" Grid.Row="2" 
+                    ItemsSource="{Binding TechnicianList}"
+                    SelectedItem="{Binding Technician}"/>
+                <HorizontalStackLayout 
+                    HorizontalOptions="Center"
+                    Spacing="5"
+                    Grid.Column="0" Grid.Row="3"
+                    Grid.ColumnSpan="2">
+                    <Button
+                        x:Name="Form_AddButton"
+                        IsVisible="False"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding AddBiWeeklyCommand}"
+                        />
+                    <Button  
+                        x:Name="Form_UpdateButton"
+                        IsVisible="False"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateBiWeeklyCommand}"
+                        />
+                    <Button
+                        x:Name="Form_DeleteButton"
+                        IsVisible="False"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteBiWeeklyCommand}"
+                        />
+                </HorizontalStackLayout>
+            
+            </Grid>
+            <Grid
+                RowDefinitions="*,*"
+                ColumnDefinitions="100,100,100"
+                WidthRequest="310"
+                ColumnSpacing="5">
+                <Label 
+                    Text="Expiry Date" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"/>
+                <Label 
+                    Text="Maintenance Done On Date" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="1"/>
+                <Label 
+                    Text="Technician" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="2"/>
+
+                <ListView
+                    x:Name="BiWeeklyListView"
+                    ItemsSource="{Binding BiWeeklyList}"
+                    SelectedItem="{Binding SelectedBiWeekly}"
+                    ItemSelected="BiWeeklyListView_ItemSelected"
+                    HorizontalOptions="Center"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:BiWeeklyModel">
+                            <ViewCell>
+                                <Grid
+                                ColumnDefinitions="100,100,100"
+                                ColumnSpacing="5"
+                                HorizontalOptions="Center"
+                                Margin="2">
+                                    <Frame
+                                    Grid.Column="0" Grid.ColumnSpan="3"
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                    <Label 
+                                    Text="{Binding ExpiryDate}" 
+                                    Grid.Column="0"/>
+                                    <Label 
+                                    Text="{Binding DoneOnDate}" 
+                                    Grid.Column="1"/>
+                                    <Label
+                                    Text="{Binding Technician}"
+                                    Grid.Column="2"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.ComponentSM"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:ComponentSMViewModel"
+             Title="Components Scheduled Maintenance">
+    <ScrollView Orientation="Both">
+        <VerticalStackLayout Spacing="5">
+        <HorizontalStackLayout 
+            HorizontalOptions="Center"
+            Spacing="5">
+            <Button
+                x:Name="GeneralButton"
+                Text="Main View"
+                Clicked="General_Clicked"
+                WidthRequest="280"
+                BackgroundColor="#267AA9"
+                Style="{StaticResource Button_TopManu}"
+                />
+            <Button
+                x:Name="AssembleButton"
+                Text="Assemble Component" 
+                Clicked="Assemble_Clicked"
+                WidthRequest="280"
+                Style="{StaticResource Button_TopManu}"
+                />
+            <Button
+                x:Name="DisassembleButton"
+                Text="Disassemble Component"
+                Clicked="Disassemble_Clicked"
+                WidthRequest="280"
+                Style="{StaticResource Button_TopManu}"
+                />
+        </HorizontalStackLayout>
+     
+        <VerticalStackLayout >
+            <Grid
+                x:Name="AssembleComponentForm"
+                IsVisible="false"
+                Style="{StaticResource FormGridStyle}"
+                RowDefinitions="*,*,*,*,*,*,*"
+                ColumnDefinitions="*,*"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Component Type:" 
+                    Grid.Column="0" Grid.Row="0"
+                     />
+                <Picker
+                    Grid.Column="1" Grid.Row="0" 
+                    ItemsSource="{Binding ComponentTypes}"
+                    SelectedItem="{Binding ComponentType}"
+                    SelectedIndexChanged="OnPickerSelectedIndexChanged"
+                    />
+
+                <Label
+                    Text="Serial Number:"
+                    Grid.Column="0" Grid.Row="1"
+                     />
+                <Picker
+                    Grid.Column="1" Grid.Row="1"
+                    ItemsSource="{Binding SelectedComponentSN}"
+                    SelectedItem="{Binding PickerSelectedComponent}"
+                    SelectedIndexChanged="Picker_SelectedIndexChanged">
+                    <Picker.ItemDisplayBinding>
+                        <Binding Path="AssembleStatus"/>
+                    </Picker.ItemDisplayBinding>
+                </Picker>
+
+                <Label
+                    Text="Valid Uav Hours:"
+                    Grid.Column="0" Grid.Row="2"
+                     />
+                <Entry
+                    Grid.Column="1" Grid.Row="2"
+                    Placeholder="Uav Hours"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding ValidUavHours}"/>
+                
+                <Label
+                    Text="Date:"
+                    Grid.Column="0" Grid.Row="3"
+                     />
+                <DatePicker
+                    Grid.Column="3" Grid.Row="3"
+                     
+                    Date="{Binding AssemblyDate}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="4"
+                     />
+                <Picker
+                    Grid.Column="1" Grid.Row="4" 
+                    ItemsSource="{Binding TechnicianList}"
+                    SelectedItem="{Binding AssemblyTechnician}"/>
+                
+                <Label 
+                    Text="Chief Technican:" 
+                    Grid.Column="0" Grid.Row="5"
+                     />
+                <Picker
+                    Grid.Column="1" Grid.Row="5" 
+                    ItemsSource="{Binding ChiefTechnicianList}"
+                    SelectedItem="{Binding AssemblyChiefTechnician}"/>
+
+                <Button 
+                    Text="Assemble Component"
+                    Grid.ColumnSpan="2"
+                    Grid.Column="0" Grid.Row="6"
+                    Style="{StaticResource AddButtonStyle}"
+                    Clicked="On_Assemble_Component_Clicked"
+                   
+                    />
+
+            </Grid>
+            <Grid
+                x:Name="DisassembleComponentForm"
+                IsVisible="false"
+                Style="{StaticResource FormGridStyle}"
+                RowDefinitions="*,*"
+                ColumnDefinitions="*,*"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label
+                    Text="Done At Uav Hours:"
+                    Grid.Column="0" Grid.Row="0"
+                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                <Entry
+                    Grid.Column="1" Grid.Row="0"
+                    Placeholder="Uav Hours"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding DoneAtUavHours}"/>
+                <Button 
+                    Text="Disassemble Component"
+                    Grid.ColumnSpan="2"
+                    Grid.Column="0" Grid.Row="6"
+                    Style="{StaticResource AddButtonStyle}"
+                    Command="{Binding DisassembleComponentCommand}"
+                    />
+            </Grid>
+            
+            <HorizontalStackLayout 
+                Spacing="40" 
+                HorizontalOptions="Center">
+                    <Grid
+                        RowDefinitions="50,50,*"
+                        ColumnDefinitions="80,80,80,80,80,80"
+                        WidthRequest="505"
+                        ColumnSpacing="5"
+                        RowSpacing="5">
+                        <Label 
+                            Text="Current Components Assembled"
+                            FontAttributes="Bold" 
+                            FontSize="32" 
+                            WidthRequest="505"
+                            HorizontalTextAlignment="Center"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.ColumnSpan="6"/>
+                        <Label 
+                            Text="Component Type" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="0"/>
+                        <Label 
+                            Text="S/N"
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="1"/>
+                        <Label 
+                            Text="Valid UAV Hr" 
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="2"/>
+                        <Label 
+                            Text="Assembly Date" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="3"/>
+                        <Label 
+                            Text="Technician" 
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="4"/>
+                        <Label 
+                            Text="Chief Technician" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="5"/>
+
+
+                        <ListView 
+                                x:Name="CurrentComponentList"          
+                                ItemsSource="{Binding ComponentsCurrentlyAssembled}"
+                                SelectedItem="{Binding SelectedComponent}"
+                                ItemSelected="Disassemble_Clicked"
+                                HorizontalOptions="Center"
+                                Grid.Row="2" Grid.ColumnSpan="6">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComponentSMModel">
+                                    <ViewCell>
+                                        <Grid
+                                        ColumnDefinitions="80,80, 80, 80, 80, 80"
+                                        ColumnSpacing="5">
+                                            <Label 
+                                                Text="{Binding ComponentType}" 
+                                                Grid.Column="0"/>
+                                            <Label 
+                                                Text="{Binding SN}" 
+                                                Grid.Column="1"/>
+                                            <Label 
+                                                Text="{Binding ValidUavHours}" 
+                                                Grid.Column="2"/>
+                                            <Label
+                                                Text="{Binding AssemblyDate}"
+                                                Grid.Column="3"/>
+                                            <Label 
+                                                Text="{Binding AssemblyTechnician}"
+                                                Grid.Column="4"/>
+                                            <Label 
+                                                Text="{Binding AssemblyChiefTechnician}"
+                                                Grid.Column="5"/>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+
+                    <Grid
+                        RowDefinitions="50,50,*"
+                        ColumnDefinitions="80,80,80,80,80,80,80"
+                        WidthRequest="590"
+                        ColumnSpacing="5"
+                        RowSpacing="5">
+                        <Label 
+                            Text="Component History"
+                            FontAttributes="Bold"
+                            FontSize="32" 
+                            WidthRequest="590"
+                            HorizontalTextAlignment="Center" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="0" Grid.ColumnSpan="7"/>
+                        <Label 
+                            Text="Component Type" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="0"/>
+                        <Label 
+                            Text="S/N"
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="1"/>
+                        <Label 
+                            Text="Valid UAV Hr" 
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="2"/>
+                        <Label 
+                            Text="Done At UAV Hr" 
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="3"/>
+                        <Label 
+                            Text="Assembly Date" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="4"/>
+                        <Label 
+                            Text="Technician" 
+                            WidthRequest="80"
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="5"/>
+                        <Label 
+                            Text="Chief Technician" 
+                            WidthRequest="80" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            Grid.Row="1" Grid.Column="6"/>
+                        <ListView 
+                            x:Name="ComponentHistoryList"          
+                            ItemsSource="{Binding ComponentsSMHistory}"
+                            HorizontalOptions="Center" 
+                            SelectionMode="None"
+                            Grid.Row="2" Grid.ColumnSpan="7"
+                            >
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComponentSMModel">
+                                    <ViewCell>
+                                        <Grid
+                                            ColumnDefinitions="80,80, 80, 80, 80, 80,80"
+                                            ColumnSpacing="5">
+
+                                            <Label 
+                                                Text="{Binding ComponentType}"
+                                                Grid.Column="0"/>
+                                            <Label 
+                                                Text="{Binding SN}" 
+                                                Grid.Column="1"/>
+                                            <Label
+                                                Text="{Binding ValidUavHours}"
+                                                Grid.Column="2"/>
+                                            <Label 
+                                                Text="{Binding DoneAtUavHours}"
+                                                Grid.Column="3"/>
+                                            <Label 
+                                                Text="{Binding AssemblyDate}"
+                                                Grid.Column="4"/>
+                                            <Label 
+                                                Text="{Binding AssemblyTechnician}"
+                                                Grid.Column="5"/>
+                                            <Label 
+                                                Text="{Binding AssemblyChiefTechnician}"
+                                                Grid.Column="6"/>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+
+                </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

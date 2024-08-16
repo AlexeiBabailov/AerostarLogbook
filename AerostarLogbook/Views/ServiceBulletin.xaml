@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.ServiceBulletin"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:ServiceBulletinViewModel"
+             Title="Service Bulletin">
+    <ScrollView Orientation="Both">
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                     x:Name="MainViewButton" 
+                     Text="Main View" 
+                     Clicked="MainViewButton_Clicked"
+                     WidthRequest="200"
+                     BackgroundColor="Purple"/>
+                <Button 
+                     x:Name="AddItemButton" 
+                     Text="Add New Service Bulletin" 
+                     Clicked="AddItemButton_Clicked"
+                     WidthRequest="200"
+                     BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+            <Grid       
+                x:Name="ServiceBulletinForm"
+                RowDefinitions="*,*,*,*,*,*"
+                ColumnDefinitions="*,*"
+                Style="{StaticResource FormGridStyle}"
+                IsVisible="False">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                Text="Service Bulletin Number:" 
+                Grid.Column="0" Grid.Row="0"
+                />
+                <Entry 
+                Grid.Column="1" Grid.Row="0"
+                Placeholder="Service Bulletin Number"  
+                Text="{Binding ServiceBulletinNumber}"
+                />
+
+                <Label 
+                Text="Service Bulletin Date:" 
+                Grid.Column="0" Grid.Row="1" 
+                />
+                <DatePicker
+                Grid.Column="1" Grid.Row="1"
+                Date="{Binding Date}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                Text="Change Description:" 
+                Grid.Column="0" Grid.Row="2" 
+                />
+                <Editor
+                Grid.Column="1" Grid.Row="2"
+                Placeholder="Service Bulletin Description here..."  
+                Text="{Binding Description}"
+                WidthRequest="300" />
+
+                <Label 
+                Text="Technician:" 
+                Grid.Column="0" Grid.Row="3"
+                />
+                <Picker
+                Grid.Column="1" Grid.Row="3" 
+                ItemsSource="{Binding TechnicianList}"
+                SelectedItem="{Binding Technician}"/>
+
+                <Label 
+                Text="Chief Technician:" 
+                Grid.Column="0" Grid.Row="4"
+                />
+                <Picker
+                Grid.Column="1" Grid.Row="4" 
+                ItemsSource="{Binding ChiefTechnicianList}"
+                SelectedItem="{Binding ChiefTechnician}"/>
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button 
+                        x:Name="AddServiceBulletin"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding AddServiceBulletinCommand}"
+                        WidthRequest="160"
+                        />
+                    <Button
+                        x:Name="UpdateServiceBulletin"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateServiceBulletinCommand}"
+                        WidthRequest="160"
+                        IsVisible="false"
+                        />
+                    <Button 
+                        x:Name="DeleteServiceBulletin"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteServiceBulletinCommand}"
+                        IsVisible="false"
+                        WidthRequest="160"
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                RowDefinitions="*,*"
+                ColumnDefinitions="100,100,300,100,100"
+                WidthRequest="720"
+                ColumnSpacing="5">
+                <Label 
+                    Text="Bulletin Number" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"/>
+                <Label 
+                    Text="Bulletin Date"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="1"/>
+                <Label 
+                    Text="Change Description" 
+                    WidthRequest="300"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="2"/>
+                <Label 
+                    Text="Technician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="3"/>
+                <Label 
+                    Text="Chief Technician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="4"/>
+
+                <ListView  
+                    x:Name="ServiceBulletin_ListView"
+                    ItemsSource="{Binding BulletinList}"
+                    SelectedItem="{Binding SelectedBulletin}"
+                    ItemSelected="ServiceBulletin_ListView_ItemSelected"
+                    HorizontalOptions="Center"  
+                    Grid.Row="1" Grid.ColumnSpan="5"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ServiceBulletinModel">
+                            <ViewCell>
+                                <Grid
+                                    ColumnDefinitions="100,100,300,100,100"
+                                    HorizontalOptions="Center"
+                                    ColumnSpacing="5"
+                                    Margin="2">
+                                    <Frame 
+                                        Grid.Column="0" Grid.ColumnSpan="5" 
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <Label 
+                                        Text="{Binding ServiceBulletinNumber}" 
+                                        Grid.Column="0"/>
+                                    <Label 
+                                        Text="{Binding Date}" 
+                                        Grid.Column="1"/>
+                                    <Label
+                                        Text="{Binding Description}" 
+                                        Grid.Column="2" />
+                                    <Label 
+                                        Text="{Binding Technician}"
+                                        Grid.Column="3" />
+                                    <Label 
+                                        Text="{Binding ChiefTechnician}"
+                                        Grid.Column="4"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

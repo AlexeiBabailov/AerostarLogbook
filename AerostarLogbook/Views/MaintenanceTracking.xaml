@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.MaintenanceTracking"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             xmlns:converters="clr-namespace:AerostarLogbook.Resources.Converters"
+             x:DataType="vm:MaintenanceTrackingViewModel"
+             Title="Maintanance Tracking">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolTostringConverter x:Key="BoolToStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ScrollView>
+        
+        <VerticalStackLayout>
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="GeneralButton"
+                    Text="General" 
+                    Clicked="MaintenanceGeneral_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="OpenButton"
+                    Text="Open a new Maintenance required" 
+                    Clicked="OpenNewMaintenance_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="Gray"/>
+                <Button
+                    x:Name="CloseButton"
+                    Text="Close exsisting maintenance action" 
+                    Clicked="CloseChosenMaintenance_Clicked"
+                    WidthRequest="280"
+                    BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+
+            <Grid 
+                x:Name="Open" 
+                IsVisible="false"
+                Style="{StaticResource FormGridStyle}"
+                ColumnDefinitions="*,*"
+                RowDefinitions="*,*,*,*,*,*"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="0"
+                    />
+                <DatePicker 
+                    Grid.Column="1" Grid.Row="0" 
+                    Date="{Binding OpenDate}"/>
+
+                <Label
+                    Text="Time:"
+                    Grid.Column="0" Grid.Row="1"
+                    />
+                <Entry 
+                    Grid.Column="1" Grid.Row="1" 
+                    Text="{Binding OpenTime}"/>
+            
+                <Label 
+                    Text="Opened By:" 
+                    Grid.Column="0" Grid.Row="2" />
+                <Entry 
+                    Grid.Column="1" Grid.Row="2"
+                    Text="{Binding OpenByName}"/>
+            
+                <Label 
+                    Text="Fault Description:" 
+                    Grid.Column="0" Grid.Row="3"/>
+                <Entry 
+                    Grid.Column="1" Grid.Row="3" 
+                    WidthRequest="500"
+                    Text="{Binding FaultDescription}"/>
+                <HorizontalStackLayout
+                    Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"
+                    Spacing="20"
+                    HorizontalOptions="Center">
+                    <Button
+                        x:Name="OpenNewMaintenance"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding AddMaintenanceCommand}"
+                        Text="Add New Maintenance required"
+                        WidthRequest="240"
+                        />
+                    <Button
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteMaintenanceCommand}"
+                        Text="Delete Maintenance" 
+                        WidthRequest="240"
+
+                        />
+                </HorizontalStackLayout>
+
+            </Grid>
+
+            <Grid 
+                x:Name="Close" 
+                IsVisible="False"
+                Style="{StaticResource FormGridStyle}"
+                ColumnDefinitions="*,*"
+                RowDefinitions="*,*,*,*,*,*,*">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label
+                    Text="Corrective Action:" 
+                    Grid.Column="0" Grid.Row="0"/>
+                <Entry 
+                    Grid.Column="1" Grid.Row="0" 
+                    WidthRequest="500" 
+                    Text="{Binding CorrectiveAction}"/>
+
+                <Label 
+                    Text="FOD Check:" 
+                    Grid.Column="0" Grid.Row="1" />
+                <CheckBox 
+                    Grid.Column="1" Grid.Row="1" 
+                    HorizontalOptions="Center" 
+                    IsChecked="{Binding FodCheck, Converter={StaticResource BoolToStringConverter}, Mode=TwoWay}" />
+            
+                <Label 
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="2" />
+                <DatePicker 
+                    Grid.Column="1" Grid.Row="2"
+                    Date="{Binding CloseDate}"/>
+
+                <Label 
+                    Text="Time:" 
+                    Grid.Column="0" Grid.Row="3" />
+                <Entry 
+                    Grid.Column="1" Grid.Row="3" 
+                    Text="{Binding CloseTime}"/>
+
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="4" />
+                <Picker 
+                    Grid.Column="1" Grid.Row="4" 
+                    HorizontalOptions="Center" 
+                    WidthRequest="200"
+                    ItemsSource="{Binding TechnicianList}"
+                    SelectedItem="{Binding CloseTechnician}"/>
+
+                <Label 
+                    Text="Chief Technician" 
+                    Grid.Column="0" Grid.Row="5" />
+                <Picker 
+                    Grid.Column="1" Grid.Row="5" 
+                    HorizontalOptions="Center" 
+                    WidthRequest="200" 
+                    ItemsSource="{Binding ChiefTechnicianList}"
+                    SelectedItem="{Binding CloseChiefTechnician}"/>
+            
+
+                <HorizontalStackLayout
+                    Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                    Spacing="20"
+                    HorizontalOptions="Center">
+                    <Button
+                        x:Name="CloseMaintenance"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding CloseMaintenanceCommand}"
+                        Text="Close this Maintenance"
+                        WidthRequest="200"
+                        />
+                    <Button
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteMaintenanceCommand}"
+                        Text="Delete Maintenance" 
+                        WidthRequest="200"
+
+                        />
+                </HorizontalStackLayout>
+
+            </Grid>
+
+            <ListView x:Name="MaintenanceTrackingListView"
+                      ItemsSource="{Binding MaintenanceTrackings}"
+                      BackgroundColor="White" SeparatorColor="Gray"
+                      SelectedItem="{Binding SelectedMaintenance}"
+                      HorizontalOptions="Center"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MaintenanceTrackingModel" >
+                        <ViewCell>
+                                <Grid 
+                                    ColumnSpacing="5"
+                                    ColumnDefinitions="70, 50, 80, 200, 200, 80, 70, 50, 80, 80"
+                                    Margin="2"
+                                    HorizontalOptions="Center">
+
+                                <Frame 
+                                    Grid.Column="0" Grid.ColumnSpan="10" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Label 
+                                    Grid.Column="0" 
+                                    Text="{Binding OpenDate}" 
+                                    FontSize="11"/>
+                                <Label 
+                                    Grid.Column="1" 
+                                    Text="{Binding OpenTime}"/>
+                                <Label 
+                                    Grid.Column="2" 
+                                    Text="{Binding OpenByName}" />
+                                <Label 
+                                    Grid.Column="3" 
+                                    Text="{Binding FaultDescription}" />
+                                <Label 
+                                    Grid.Column="4" 
+                                    Text="{Binding CorrectiveAction}" />
+                                <Label 
+                                    Grid.Column="5" 
+                                    Text="{Binding FodCheck}" />
+                                <Label 
+                                    Grid.Column="6" 
+                                    Text="{Binding CloseDate}"  
+                                    FontSize="11"/>
+                                <Label 
+                                    Grid.Column="7" 
+                                    Text="{Binding CloseTime}" />
+                                <Label 
+                                    Grid.Column="8" 
+                                    Text="{Binding CloseTechnician}" />
+                                <Label 
+                                    Grid.Column="9"
+                                    Text="{Binding CloseChiefTechnician}" />
+
+                                </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Header>
+                    <VerticalStackLayout 
+                        HorizontalOptions="Center" 
+                        BackgroundColor="White" 
+                        Spacing="5">
+                        <Label 
+                            HorizontalOptions="Start" 
+                            Text="Maintenance Tracking" 
+                            Padding="5" FontSize="Large" 
+                            Style="{StaticResource ListView_LabelStyle}"
+                            WidthRequest="1010" />
+                        <HorizontalStackLayout 
+                            BackgroundColor="White" 
+                            WidthRequest="1010" 
+                            HorizontalOptions="Start" Spacing="5">
+                            <Label 
+                                Text="Open" 
+                                WidthRequest="420" 
+                                FontAttributes="Bold" 
+                                FontSize="32"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Close"
+                                WidthRequest="585" 
+                                FontAttributes="Bold" 
+                                FontSize="32" 
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout 
+                            Spacing="5" 
+                         
+                            BackgroundColor="White">
+                            <Label 
+                                Text="Date" 
+                                WidthRequest="85" 
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Time"
+                                WidthRequest="50"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Opened By" 
+                                WidthRequest="80"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Fault Description" 
+                                WidthRequest="190" 
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Corrective Action" 
+                                WidthRequest="200" 
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="FOD Check" 
+                                WidthRequest="80" 
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Date" 
+                                WidthRequest="70"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Time" 
+                                WidthRequest="50"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Technician" 
+                                WidthRequest="80"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                            <Label 
+                                Text="Chief Technician"
+                                WidthRequest="80"
+                                Style="{StaticResource ListView_LabelStyle}"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </ListView.Header>
+            </ListView>
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

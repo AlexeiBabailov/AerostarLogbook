@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.FuselageScheduledMaintenance"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:FuselageScheduledMaintenanceViewModel"
+             Title="Fuselage Scheduled Maintenance">
+   
+        
+    
+    <ScrollView Orientation="Vertical">
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="MainViewButton" 
+                    Text="Main View" 
+                    Clicked="MainViewButton_Clicked"
+                    WidthRequest="250"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="AddItemButton" 
+                    Text="Add New Fuseledge Maintenance" 
+                    Clicked="AddItemButton_Clicked"
+                    WidthRequest="250"
+                    BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+            <Grid
+                x:Name="FSMForm"
+                Style="{StaticResource FormGridStyle}"
+                RowDefinitions="*,*,*,*,*,*,*"
+                ColumnDefinitions="160,160"
+                ColumnSpacing="5"
+                IsVisible="False"
+                >
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Valid UAV hrs. :" 
+                    Grid.Column="0" Grid.Row="0" 
+                    />
+                <Entry
+                    Grid.Column="1" Grid.Row="0"
+                    Placeholder="write valid UAV hrs. here..."  
+                    Text="{Binding ValidUavHr}"
+                    />
+           
+                <Label 
+                    Text="Done At UAV hrs. :" 
+                    Grid.Column="0" Grid.Row="1" 
+                    />
+                <Entry
+                    Grid.Column="1" Grid.Row="1"
+                    Placeholder="Write here Done at UAV hrs."  
+                    Text="{Binding DoneAtUavHr}"
+                    />
+            
+                <Label 
+                    Text="Date:" 
+                    Grid.Column="0" Grid.Row="2" 
+                    />
+                <DatePicker
+                    Grid.Column="1" Grid.Row="2"
+                    Date="{Binding Date}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+            
+                <Label 
+                    Text="Technician:" 
+                    Grid.Column="0" Grid.Row="3"
+                    />
+                <Picker
+                    Grid.Column="1" Grid.Row="3" 
+                    ItemsSource="{Binding TechnicianList}"
+                    SelectedItem="{Binding Technician}"/>
+           
+                <Label 
+                    Text="Chief Technician:" 
+                    Grid.Column="0" Grid.Row="4"
+                    />
+                <Picker
+                    Grid.Column="1" Grid.Row="4" 
+                    ItemsSource="{Binding ChiefTechnicianList}"
+                    SelectedItem="{Binding ChiefTechnician}"/>
+    
+                <Label 
+                    Text="Maintenance Type (500/1000):" 
+                    Grid.Column="0" Grid.Row="5"
+                    />
+                <Picker
+                    Grid.Column="1" Grid.Row="5" 
+                    ItemsSource="{Binding TypesOfFsm}"
+                    SelectedItem="{Binding Type}"/>
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button 
+                        x:Name="AddFSM"
+                        Style="{StaticResource AddButtonStyle}"
+                        Clicked="Add_Button_Clicked"
+                        WidthRequest="180"
+                        IsVisible="False"
+                        />
+                    <Button
+                        x:Name="UpdateFSM"
+                        IsVisible="False"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateFsmDetailsCommand}"
+                        WidthRequest="160"
+
+                        />
+                    <Button 
+                        x:Name="DeleteFSM"   
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteFsmCommand}"
+                        WidthRequest="160"
+                        IsVisible="False"
+                     />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                 RowDefinitions="*,*"
+                 ColumnDefinitions="100,100,100,100,100,100"
+                 WidthRequest="625"
+                 ColumnSpacing="5">
+                <Label 
+                    Text="Valid Uav Hr"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"/>
+                <Label 
+                    Text="DoneAt Uav Hr"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="1"/>
+                <Label 
+                    Text="Type" 
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="2"/>
+                <Label 
+                    Text="Date"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="3"/>
+                <Label 
+                    Text="Technician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="4"/>
+                <Label 
+                    Text="ChiefTechnician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="5"/>
+
+
+                <ListView  
+                    x:Name="FSMListView" 
+                    ItemsSource="{Binding FsmList}"
+                    SelectedItem="{Binding SelectedFsm}"
+                    ItemSelected="ListView_ItemSelected"
+                    HorizontalOptions="Center"
+                    Grid.Row="1"  
+                    Grid.ColumnSpan="6"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:FuselageScheduledMaintenanceModel">
+                            <ViewCell>
+                                <Grid
+                                    ColumnDefinitions="100, 100, 100, 100, 100, 100"
+                                    ColumnSpacing="5"            
+                                    HorizontalOptions="Center"
+                                    Margin="5">
+                                    <Frame
+                                        Grid.Column="0" Grid.ColumnSpan="6"
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <Label
+                                        Text="{Binding ValidUavHr}"
+                                        Grid.Column="0"/>
+                                    <Label 
+                                        Text="{Binding DoneAtUavHr}"
+                                        Grid.Column="1"/>
+                                    <Label 
+                                        Text="{Binding Type}" 
+                                        Grid.Column="2"/>
+                                    <Label 
+                                        Text="{Binding Date}" 
+                                        Grid.Column="3"/>
+                                    <Label 
+                                        Text="{Binding Technician}" 
+                                        Grid.Column="4"/>
+                                    <Label
+                                        Text="{Binding ChiefTechnician}"
+                                        Grid.Column="5"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+        
+</ContentPage>

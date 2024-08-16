@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.SoftwareConfiguration"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:SoftwareConfigurationViewModel"
+             Title="Software Configuration Changes">
+    <ScrollView Orientation="Both">
+        <VerticalStackLayout Spacing="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="MainViewButton" 
+                    Text="Main View" 
+                    Clicked="MainViewButton_Clicked"
+                    WidthRequest="250"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="AddItemButton" 
+                    Text="Add New Software Configuration" 
+                    Clicked="AddItemButton_Clicked"
+                    WidthRequest="250"
+                    BackgroundColor="Gray"
+                    />
+            </HorizontalStackLayout>
+            <Grid
+                x:Name="SoftwareConfForm"
+                Style="{StaticResource FormGridStyle}"
+                RowDefinitions="*,*,*,*,*,*,*,*,*"
+                ColumnDefinitions="*,*"
+                IsVisible="False">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                Text="Main Version:" 
+                Grid.Column="0" Grid.Row="0"/>
+                <Entry
+                Grid.Column="1" Grid.Row="0"
+                Placeholder="Main Version" 
+                WidthRequest="150"
+                Text="{Binding MainVersion}" />
+
+                <Label 
+                Text="INS_1 Version:" 
+                Grid.Column="0" Grid.Row="1" 
+                />
+                <Entry
+                Grid.Column="1" Grid.Row="1"
+                Placeholder="INS_1 Version"  
+                WidthRequest="150"
+                Text="{Binding INS1Version}"/>
+
+                <Label 
+                Text="INS_2 Version:" 
+                Grid.Column="0" Grid.Row="2" 
+                />
+                <Entry
+                Grid.Column="1" Grid.Row="2"
+                Placeholder="INS_2 Version"  
+                WidthRequest="150"
+                Text="{Binding INS2Version}" />
+
+                <Label 
+                Text="ADI Version:" 
+                Grid.Column="0" Grid.Row="3" />
+                <Entry
+                Grid.Column="1" Grid.Row="3"
+                Placeholder="ADI Version"  
+                WidthRequest="150"
+                Text="{Binding ADIVersion}" />
+
+                <Label 
+                Text="Change Description:" 
+                Grid.Column="0" Grid.Row="4" />
+                <Editor
+                Grid.Column="1" Grid.Row="4"
+                Placeholder="Change Description"  
+                WidthRequest="300"
+                Text="{Binding ChangeDescription}" />
+
+                <Label 
+                Text="Date:" 
+                Grid.Column="0" Grid.Row="5" />
+                <DatePicker
+                Grid.Column="1" Grid.Row="5"
+                Date="{Binding SWConfDate}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+
+                <Label 
+                Text="Technician:" 
+                Grid.Column="0" Grid.Row="6"/>
+                <Picker
+                Grid.Column="1" Grid.Row="6" 
+                ItemsSource="{Binding TechnicianList}"
+                SelectedItem="{Binding SWConfTechnician}"/>
+
+                <Label 
+                Text="Chief Technician:" 
+                Grid.Column="0" Grid.Row="7"/>
+                <Picker
+                Grid.Column="1" Grid.Row="7" 
+                ItemsSource="{Binding ChiefTechnicianList}"
+                SelectedItem="{Binding SWConfChiefTechnician}"/>
+                <HorizontalStackLayout 
+                    Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Button
+                        x:Name="AddSoftwareConf"
+                        Style="{StaticResource AddButtonStyle}"
+                        Command="{Binding AddSWConfCommand}"
+                        WidthRequest="160"
+                        />
+                    <Button
+                        x:Name="UpdateSoftwareConf"
+                        Style="{StaticResource UpdateButtonStyle}"
+                        Command="{Binding UpdateSoftwareConfigurationCommand}"
+                        WidthRequest="160"
+                        IsVisible="false"
+                        />
+                    <Button 
+                        x:Name="DeleteSoftwareConf"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteSWConfCommand}"
+                        WidthRequest="160"
+                        IsVisible="false"
+                        />
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                RowDefinitions="*,*"
+                ColumnDefinitions="100,100,100,100,300,100,100,100"
+                WidthRequest="1035"
+                ColumnSpacing="5">
+                <Label 
+                    Text="Main Version"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="0"/>
+                <Label 
+                    Text="INS1 Version"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="1"/>
+                <Label
+                    Text="INS2 Version"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="2"/>
+                <Label 
+                    Text="ADI Version"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="3"/>
+                <Label
+                    Text="Change Description"
+                    WidthRequest="300"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="4"/>
+                <Label 
+                    Text="Date"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="5"/>
+                <Label
+                    Text="Technician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="6"/>
+                <Label 
+                    Text="Chief Technician"
+                    WidthRequest="100"
+                    Style="{StaticResource ListView_LabelStyle}"
+                    Grid.Row="0" Grid.Column="7"/>
+
+                <ListView   
+                    x:Name="SoftwareConfListView"
+                    ItemsSource="{Binding SoftwareConfigurationList}"
+                    SelectedItem="{Binding SelectedSWConf}"
+                    ItemSelected="SoftwareConfListView_ItemSelected"
+                    HorizontalOptions="Center"    
+                    Grid.Row="1"
+                    Grid.ColumnSpan="8"
+                    >
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:SoftwareConfigurationModel">
+                            <ViewCell>
+                                <Grid
+                                ColumnDefinitions="100,100,100,100,300,100,100,100"
+                                ColumnSpacing="5"
+                                HorizontalOptions="Center"
+                                Margin="2">
+                                    <Frame
+                                    Grid.Column="0" Grid.ColumnSpan="8"
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                    <Label 
+                                    Text="{Binding MainVersion}" 
+                                    Grid.Column="0" />
+                                    <Label 
+                                    Text="{Binding INS1Version}" 
+                                    Grid.Column="1"/>
+                                    <Label 
+                                    Text="{Binding INS2Version}"
+                                    Grid.Column="2"/>
+                                    <Label
+                                    Text="{Binding ADIVersion}" 
+                                    Grid.Column="3" />
+                                    <Label
+                                    Text="{Binding ChangeDescription}"
+                                    Grid.Column="4"/>
+                                    <Label
+                                    Text="{Binding SWConfDate}"
+                                    Grid.Column="5" />
+                                    <Label 
+                                    Text="{Binding SWConfTechnician}" 
+                                    Grid.Column="6"/>
+                                    <Label
+                                    Text="{Binding SWConfChiefTechnician}" 
+                                    Grid.Column="7"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

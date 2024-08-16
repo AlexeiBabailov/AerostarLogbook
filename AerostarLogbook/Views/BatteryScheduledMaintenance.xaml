@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.BatteryScheduledMaintenance"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:BatterySMViewModel"
+             Title="Battery Scheduled Maintenance">
+    <ScrollView x:Name="mainScrollView">
+        <VerticalStackLayout Spacing="5" Padding="5">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Button 
+                    x:Name="GeneralButton" 
+                    Text="Main View" 
+                    Clicked="General_View"
+                    WidthRequest="180"
+                    BackgroundColor="Purple"/>
+                <Button 
+                    x:Name="AddBatteryButton" 
+                    Text="Add New Battery" 
+                    Clicked="Open_New_Battery_Form"
+                    WidthRequest="180"
+                    BackgroundColor="Gray"/>
+            </HorizontalStackLayout>
+            <Grid
+                Style="{StaticResource FormGridStyle}"
+                x:Name="BatteryForm"
+                IsVisible="False"
+                BackgroundColor="LightSteelBlue"
+                RowDefinitions="*,*,*,*,*,*,*,*,*"
+                ColumnDefinitions="*,*,*,*,*,*">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="HorizontalOptions" Value="Center"/>
+                        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        <Setter Property="VerticalTextAlignment" Value="Center"/>
+                        <Setter Property="TextColor" Value="White"/>
+                    </Style>
+                </Grid.Resources>
+                <Label 
+                    Text="Battery Hours:"
+                    Grid.Row="0" Grid.Column="0" />
+                <Entry
+                    Grid.Row="0" Grid.Column="1"
+                    Text="{Binding BatteryHrs}" />
+
+                <Label 
+                    Text="Initial Activation:"
+                    Grid.Row="0" Grid.Column="2" />
+                <Entry
+                    Grid.Row="0" Grid.Column="3"
+                    Text="{Binding InitialActivation}" />
+                
+                <Label 
+                    Text="Battery S/N:"
+                    Grid.Row="0" Grid.Column="4" />
+                <Entry
+                    Grid.Row="0" Grid.Column="5"
+                    Text="{Binding BatteryOfficialSN}" />
+
+                <Label                        
+                    Text="Valid UAV hrs."
+                    Grid.Row="1" Grid.Column="0" />
+                <Label                        
+                    Text="Done At UAV hrs."
+                    Grid.Row="1" Grid.Column="1" />
+                <Label                        
+                    Text="Valid (Date)"
+                    Grid.Row="1" Grid.Column="2" />
+                <Label                        
+                    Text="Done At (Date)"
+                    Grid.Row="1" Grid.Column="3" />
+                <Label                        
+                    Text="Technician"
+                    Grid.Row="1" Grid.Column="4" />
+                <Label                        
+                    Text="Chief Technician"
+                    Grid.Row="1" Grid.Column="5" />
+
+                <Entry
+                    Grid.Row="2" Grid.Column="0"
+                    Text="{Binding BattUavHrs1}" />
+                <Entry
+                    Grid.Row="2" Grid.Column="1"
+                    Text="{Binding BattDoneAt1}" />
+                <DatePicker
+                    Grid.Row="2" Grid.Column="2"
+                    Date="{Binding BattDate1}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="2" Grid.Column="3"
+                    Date="{Binding BattDoneDate1}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="2" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician1}"/>
+                <Picker
+                     Grid.Row="2" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician1}" />
+
+                <Entry
+                    Grid.Row="3" Grid.Column="0"
+                    Text="{Binding BattUavHrs2}" />
+                <Entry
+                    Grid.Row="3" Grid.Column="1"
+                    Text="{Binding BattDoneAt2}" />
+                <DatePicker
+                    Grid.Row="3" Grid.Column="2"
+                    Date="{Binding BattDate2}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="3" Grid.Column="3"
+                    Date="{Binding BattDoneDate2}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="3" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician2}"/>
+                <Picker
+                     Grid.Row="3" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician2}" />
+
+                <Entry
+                    Grid.Row="4" Grid.Column="0"
+                    Text="{Binding BattUavHrs3}" />
+                <Entry
+                    Grid.Row="4" Grid.Column="1"
+                    Text="{Binding BattDoneAt3}" />
+                <DatePicker
+                    Grid.Row="4" Grid.Column="2"
+                    Date="{Binding BattDate3}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="4" Grid.Column="3"
+                    Date="{Binding BattDoneDate3}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="4" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician3}"/>
+                <Picker
+                     Grid.Row="4" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician3}" />
+
+                <Entry
+                    Grid.Row="5" Grid.Column="0"
+                    Text="{Binding BattUavHrs4}" />
+                <Entry
+                    Grid.Row="5" Grid.Column="1"
+                    Text="{Binding BattDoneAt4}" />
+                <DatePicker
+                    Grid.Row="5" Grid.Column="2"
+                    Date="{Binding BattDate4}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="5" Grid.Column="3"
+                    Date="{Binding BattDoneDate4}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="5" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician4}"/>
+                <Picker
+                     Grid.Row="5" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician4}" />
+
+                <Entry
+                    Grid.Row="6" Grid.Column="0"
+                    Text="{Binding BattUavHrs5}" />
+                <Entry
+                    Grid.Row="6" Grid.Column="1"
+                    Text="{Binding BattDoneAt5}" />
+                <DatePicker
+                    Grid.Row="6" Grid.Column="2"
+                    Date="{Binding BattDate5}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="6" Grid.Column="3"
+                    Date="{Binding BattDoneDate5}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="6" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician5}"/>
+                <Picker
+                     Grid.Row="6" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician5}" />
+
+                <Entry
+                    Grid.Row="7" Grid.Column="0"
+                    Text="{Binding BattUavHrs6}" />
+                <Entry
+                    Grid.Row="7" Grid.Column="1"
+                    Text="{Binding BattDoneAt6}" />
+                <DatePicker
+                    Grid.Row="7" Grid.Column="2"
+                    Date="{Binding BattDate6}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <DatePicker
+                    Grid.Row="7" Grid.Column="3"
+                    Date="{Binding BattDoneDate6}">
+                    <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                </DatePicker>
+                <Picker
+                     Grid.Row="7" Grid.Column="4"
+                    ItemsSource="{Binding TechnicianList}"                          
+                    SelectedItem="{Binding BattTechnician6}"/>
+                <Picker
+                     Grid.Row="7" Grid.Column="5"
+                    ItemsSource="{Binding ChiefTechnicianList}"                          
+                    SelectedItem="{Binding BattChiefTechnician6}" />
+                <HorizontalStackLayout
+                    Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="6"
+                    Spacing="10"
+                    HorizontalOptions="Center">
+                    <Button
+                        x:Name="AddNewBatt"
+                        IsVisible="True"
+                        Style="{StaticResource AddButtonStyle}"
+                        Clicked="Add_New_Battery_Button_Clicked"
+                        WidthRequest="180" 
+                        />
+                    <Button
+                        x:Name="UpdateCurrentBatt"
+                        IsVisible="false"
+                        Style="{StaticResource AddButtonStyle}"
+                        Text="Update"
+                        TextColor="Black"
+                        BackgroundColor="Yellow"
+                        Command="{Binding UpdateBatteryActivityCommand}"
+                        WidthRequest="180"
+                         />
+                    <Button
+                        x:Name="DeleteCurrentBatt"
+                        IsVisible="false"
+                        Style="{StaticResource DeleteButtonStyle}"
+                        Command="{Binding DeleteBatteryCommand}"
+                        WidthRequest="180" 
+                        />
+                </HorizontalStackLayout>
+               
+            </Grid>
+
+            <ListView
+                x:Name="BatteryListView"
+                ItemsSource="{Binding Batterys}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedBattery}"
+                ItemSelected="BatteryListView_ItemSelected"
+                HorizontalOptions="Center"
+                RowHeight="400"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:BatterySMModel">
+
+                        <ViewCell>
+                            <Grid
+                                RowDefinitions="*,*,*,*,*,*,*,*"
+                                ColumnDefinitions="100,100,100,100,100,100"
+                                ColumnSpacing="15"
+                                RowSpacing="5"
+                                Margin="2"
+                                WidthRequest="675"
+                                HorizontalOptions="Center"
+                                >
+                                <Frame 
+                                    Grid.Row="0" Grid.Column="0" 
+                                    Grid.ColumnSpan="6" Grid.RowSpan="9" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="2" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="3" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="4" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="5" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="6" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+                                <Frame 
+                                    Grid.Row="7" Grid.Column="0"
+                                    Grid.ColumnSpan="6" 
+                                    Style="{StaticResource FrameInListView}"
+                                    />
+
+
+                                <HorizontalStackLayout
+                                    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                    Spacing="10"
+                                    HorizontalOptions="Center">
+                                    <Label 
+                                        Text="Battery S/N:"
+                                        FontAttributes="Bold" 
+                                        FontSize="14"/>
+                                    <Label 
+                                        Text="{Binding BatteryOfficialSN}"
+                                        FontAttributes="Bold" 
+                                        FontSize="14"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout
+                                    Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"
+                                    Spacing="10"
+                                    HorizontalOptions="Center">
+                                    <Label 
+                                        Text="Battery Hours:"
+                                        FontAttributes="Bold" />
+                                    <Label 
+                                        Text="{Binding BatteryHrs}"
+                                        FontAttributes="Bold" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout
+                                    Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"
+                                    Spacing="10"
+                                    HorizontalOptions="Center">
+                                    <Label 
+                                        Text="Initial Activation:"
+                                        FontAttributes="Bold" />
+                                    <Label 
+                                        Text="{Binding InitialActivation}"
+                                        FontAttributes="Bold" />
+                                </HorizontalStackLayout>
+
+                                <Label 
+                                    Grid.Row="1" Grid.Column="0"
+                                    Text="Valid UAV hrs" />
+                                <Label 
+                                    Grid.Row="1" Grid.Column="1"
+                                    Text="Done At UAV hrs" />
+                                <Label 
+                                    Grid.Row="1" Grid.Column="2"
+                                    Text="Valid (Date)" />
+                                <Label 
+                                    Grid.Row="1" Grid.Column="3"
+                                    Text="Done At (Date)" />
+                                <Label 
+                                    Grid.Row="1" Grid.Column="4"
+                                    Text="Technician" />
+                                <Label 
+                                    Grid.Row="1" Grid.Column="5"
+                                    Text="Chief Technician" />
+
+                                <Label 
+                                    Grid.Row="2" Grid.Column="0"
+                                    Text="{Binding BattUavHrs1}" />
+                                <Label 
+                                    Grid.Row="2" Grid.Column="1"
+                                    Text="{Binding BattDoneAt1}" />
+                                <Label 
+                                    Grid.Row="2" Grid.Column="2"
+                                    Text="{Binding BattDate1}" />
+                                <Label 
+                                    Grid.Row="2" Grid.Column="3"
+                                    Text="{Binding BattDoneDate1}" />
+                                <Label 
+                                    Grid.Row="2" Grid.Column="4"
+                                    Text="{Binding BattTechnician1}" />
+                                <Label 
+                                    Grid.Row="2" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician1}" />
+
+                                <Label 
+                                    Grid.Row="3" Grid.Column="0"
+                                    Text="{Binding BattUavHrs2}" />
+                                <Label 
+                                    Grid.Row="3" Grid.Column="1"
+                                    Text="{Binding BattDoneAt2}" />
+                                <Label 
+                                    Grid.Row="3" Grid.Column="2"
+                                    Text="{Binding BattDate2}" />
+                                <Label 
+                                    Grid.Row="3" Grid.Column="3"
+                                    Text="{Binding BattDoneDate2}" />
+                                <Label 
+                                    Grid.Row="3" Grid.Column="4"
+                                    Text="{Binding BattTechnician2}" />
+                                <Label 
+                                    Grid.Row="3" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician2}" />
+
+                                <Label 
+                                    Grid.Row="4" Grid.Column="0"
+                                    Text="{Binding BattUavHrs3}" />
+                                <Label 
+                                    Grid.Row="4" Grid.Column="1"
+                                    Text="{Binding BattDoneAt3}" />
+                                <Label 
+                                    Grid.Row="4" Grid.Column="2"
+                                    Text="{Binding BattDate3}" />
+                                <Label 
+                                    Grid.Row="4" Grid.Column="3"
+                                    Text="{Binding BattDoneDate3}" />
+                                <Label 
+                                    Grid.Row="4" Grid.Column="4"
+                                    Text="{Binding BattTechnician3}" />
+                                <Label 
+                                    Grid.Row="4" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician3}" />
+
+                                <Label 
+                                    Grid.Row="5" Grid.Column="0"
+                                    Text="{Binding BattUavHrs4}" />
+                                <Label 
+                                    Grid.Row="5" Grid.Column="1"
+                                    Text="{Binding BattDoneAt4}" />
+                                <Label 
+                                    Grid.Row="5" Grid.Column="2"
+                                    Text="{Binding BattDate4}" />
+                                <Label 
+                                    Grid.Row="5" Grid.Column="3"
+                                    Text="{Binding BattDoneDate4}" />
+                                <Label 
+                                    Grid.Row="5" Grid.Column="4"
+                                    Text="{Binding BattTechnician4}" />
+                                <Label 
+                                    Grid.Row="5" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician4}" />
+
+                                <Label 
+                                    Grid.Row="6" Grid.Column="0"
+                                    Text="{Binding BattUavHrs5}" />
+                                <Label 
+                                    Grid.Row="6" Grid.Column="1"
+                                    Text="{Binding BattDoneAt5}" />
+                                <Label 
+                                    Grid.Row="6" Grid.Column="2"
+                                    Text="{Binding BattDate5}" />
+                                <Label 
+                                    Grid.Row="6" Grid.Column="3"
+                                    Text="{Binding BattDoneDate5}" />
+                                <Label 
+                                    Grid.Row="6" Grid.Column="4"
+                                    Text="{Binding BattTechnician5}" />
+                                <Label 
+                                    Grid.Row="6" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician5}" />
+
+                                <Label 
+                                    Grid.Row="7" Grid.Column="0"
+                                    Text="{Binding BattUavHrs6}" />
+                                <Label 
+                                    Grid.Row="7" Grid.Column="1"
+                                    Text="{Binding BattDoneAt6}" />
+                                <Label 
+                                    Grid.Row="7" Grid.Column="2"
+                                    Text="{Binding BattDate6}" />
+                                <Label 
+                                    Grid.Row="7" Grid.Column="3"
+                                    Text="{Binding BattDoneDate6}" />
+                                <Label 
+                                    Grid.Row="7" Grid.Column="4"
+                                    Text="{Binding BattTechnician6}" />
+                                <Label 
+                                    Grid.Row="7" Grid.Column="5"
+                                    Text="{Binding BattChiefTechnician6}" />
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AerostarLogbook.Views.Frequencies"
+             xmlns:model="clr-namespace:AerostarLogbook.Models"
+             xmlns:vm="clr-namespace:AerostarLogbook.ViewModels"
+             x:DataType="vm:FrequenciesViewModel"
+             Title="Frequencies">
+    
+    <ScrollView Orientation="Both">
+        <Grid
+            ColumnDefinitions="800,2,500">
+            <VerticalStackLayout
+                Grid.Column="0"
+                HorizontalOptions="Center">
+                <Label 
+                    Text="Cband Frequencies"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    />
+            
+                <Grid
+                    x:Name="CbandFrequencies"
+                    Style="{StaticResource FormGridStyle}"
+                    RowDefinitions="*,*,*,*,*,*,*,*,*"
+                    ColumnDefinitions="*,*,*,*"
+                    WidthRequest="500">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="HorizontalOptions" Value="Center"/>
+                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                            <Setter Property="VerticalTextAlignment" Value="Center"/>
+                            <Setter Property="TextColor" Value="White"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <Label
+                        Text="Channel 1:" 
+                        Grid.Column="0" Grid.Row="0"
+                         TextColor="White"
+                        />
+                    <Entry
+                        Grid.Column="1" Grid.Row="0"
+                        Placeholder="Channel 1"
+                        
+                        Text="{Binding Cband_1}"/>
+                
+                    <Label
+                        Text="Channel 2:" 
+                        Grid.Column="0" Grid.Row="1"
+                        />
+                    <Entry
+                        Grid.Column="1" Grid.Row="1"
+                        Placeholder="Channel 2"
+                        Text="{Binding Cband_2}"/>
+                
+                    <Label
+                        Text="Channel 3:" 
+                        Grid.Column="0" Grid.Row="2"
+                       />
+                    <Entry
+                        Grid.Column="1" Grid.Row="2"
+                        Placeholder="Channel 3"                   
+                        Text="{Binding Cband_3}"/>
+                
+                    <Label
+                        Text="Channel 4:" 
+                        Grid.Column="0" Grid.Row="3"
+                        />
+                    <Entry
+                        Grid.Column="1" Grid.Row="3"
+                        Placeholder="Channel 4"                    
+                        Text="{Binding Cband_4}"/>
+                
+                    <Label
+                        Text="Channel 5:"
+                        Grid.Column="0" Grid.Row="4"
+                        />
+                    <Entry
+                        Grid.Column="1" Grid.Row="4"
+                        Placeholder="Channel 5"                    
+                        Text="{Binding Cband_5}"/>
+                
+                    <Label
+                        Text="Channel 6:" 
+                        Grid.Column="2" Grid.Row="0"
+                        />
+                    <Entry
+                        Grid.Column="3" Grid.Row="0"
+                        Placeholder="Channel 6"
+                        Text="{Binding Cband_6}"/>
+                
+                    <Label
+                        Text="Channel 7:" 
+                        Grid.Column="2" Grid.Row="1"
+                        />
+                    <Entry
+                        Grid.Column="3" Grid.Row="1"
+                        Placeholder="Channel 7"
+                        Text="{Binding Cband_7}"/>
+                
+                    <Label
+                        Text="Channel 8:" 
+                        Grid.Column="2" Grid.Row="2"
+                        />
+                    <Entry
+                        Grid.Column="3" Grid.Row="2"
+                        Placeholder="Channel 8"
+                        Text="{Binding Cband_8}"/>
+                
+                    <Label
+                        Text="Channel 9:" 
+                        Grid.Column="2" Grid.Row="3"
+                        />
+                    <Entry
+                        Grid.Column="3" Grid.Row="3"
+                        Placeholder="Channel 9"
+                        Text="{Binding Cband_9}"/>
+               
+                    <Label
+                        Text="Channel 10:"
+                        Grid.Column="2" Grid.Row="4"
+                        />
+                    <Entry
+                        Grid.Column="3" Grid.Row="4"
+                        Placeholder="Channel 10"                    
+                        Text="{Binding Cband_10}"/>
+
+                    <Label 
+                        Text="Date:"
+                        Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"
+                        />
+                    <DatePicker
+                        Grid.Column="2"
+                        Grid.Row="5" 
+                        Grid.ColumnSpan="2"
+                        Date="{Binding FrequencieCbandDate}">
+                        <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                    </DatePicker>
+
+                    <Label 
+                        Text="Technician:"
+                        Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                        />
+                    <Picker
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="6" 
+                        ItemsSource="{Binding TechnicianList}"
+                        SelectedItem="{Binding FrequencieCbandTechnician}"/>
+
+                    <Label 
+                        Text="Chief Technician:" 
+                        Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"
+                        />
+                    <Picker
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="7" 
+                        ItemsSource="{Binding ChiefTechnicianList}"
+                        SelectedItem="{Binding FrequencieCbandChiefTechnician}"/>
+                    <HorizontalStackLayout
+                        Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"
+                        HorizontalOptions="Center"
+                        Spacing="5">
+                        <Button 
+                            x:Name="CbandAddButton"
+                            Text="Add Frequencies"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddCbandFrecCommand}"
+                            WidthRequest="160"
+                            Clicked="FormCband_Button_Clicked"
+                            />
+                        <Button 
+                            x:Name="CbandUpdateutton"
+                            Text="Update Frequencies"
+                            IsVisible="False"
+                            Style="{StaticResource UpdateButtonStyle}"
+                            Command="{Binding UpdateCbandFrequencieCommand}"
+                            Clicked="FormCband_Button_Clicked"
+                            WidthRequest="160"
+                            />
+                        <Button 
+                            x:Name="CbandDeleteButton"
+                            Text="Delete Frequencies"
+                            IsVisible="False"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteCbandFreCommand}"
+                            Clicked="FormCband_Button_Clicked"
+                            WidthRequest="160"
+                            />
+                    </HorizontalStackLayout>
+                </Grid>
+                <HorizontalStackLayout 
+                    Spacing="5" 
+                    BackgroundColor="White"
+                    HorizontalOptions="Center"
+                    WidthRequest="810">
+                    <Label 
+                        Text="Channels"
+                        WidthRequest="475" 
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Date"
+                        WidthRequest="100"
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Technician" 
+                        WidthRequest="100"
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Chief Technician" 
+                        WidthRequest="100" 
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label WidthRequest="10"/>
+                </HorizontalStackLayout>
+
+                <ListView 
+                    x:Name="CbandList"          
+                    ItemsSource="{Binding CbandFrequencies}"
+                    SelectedItem="{Binding SelectedCband}"
+                    ItemSelected="CbandList_ItemSelected"
+                    HorizontalOptions="Center"    
+                    WidthRequest="810"    
+                    >
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:FrequenciesCbandModel">
+                            <ViewCell>
+                                <Grid
+                                    RowDefinitions="*,*"
+                                    ColumnDefinitions="90,90,90,90,90,100,100,100"
+                                    ColumnSpacing="5"
+                                    Margin="5"
+                                    HorizontalOptions="Center"
+                                    >
+                                    <Frame 
+                                        Grid.Column="0" Grid.Row="0"
+                                        Grid.ColumnSpan="8" Grid.RowSpan="2" 
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Spacing="5">
+                                        <Label Text="Ch.1:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_1}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5">
+                                        <Label Text="Ch.2:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_2}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="2" Spacing="5">
+                                        <Label Text="Ch.3:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_3}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="3" Spacing="5">
+                                        <Label Text="Ch.4:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_4}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="0" Grid.Column="4" Spacing="5">
+                                        <Label Text="Ch.5:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_5}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="5">
+                                        <Label Text="Ch.6:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_6}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="1" Spacing="5">
+                                        <Label Text="Ch.7:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_7}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="2" Spacing="5">
+                                        <Label Text="Ch.8:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_8}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="3" Spacing="5">
+                                        <Label Text="Ch.9:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_9}" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Row="1" Grid.Column="4" Spacing="5">
+                                        <Label Text="Ch.10:" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Cband_10}" />
+                                    </HorizontalStackLayout>
+
+                                    <Label  Grid.Row="0" Grid.Column="5" Grid.RowSpan="2" 
+                                        Text="{Binding FrequencieCbandDate}" VerticalOptions="Center"/>
+                                    <Label  Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" 
+                                          Text="{Binding FrequencieCbandTechnician}" VerticalOptions="Center"/>
+                                    <Label  Grid.Row="0" Grid.Column="7" Grid.RowSpan="2" 
+                                         Text="{Binding FrequencieCbandChiefTechnician}" VerticalOptions="Center"/>
+
+
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+
+            <BoxView 
+                    Grid.Column="1"
+                    BackgroundColor="Gray"
+                    />
+
+            <VerticalStackLayout
+                Grid.Column="2">
+                <Label 
+                    Text="UHF Frequencies"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    />
+                <Grid
+                    x:Name="UhfFrequencies"
+                    Style="{StaticResource FormGridStyle}"
+                    RowDefinitions="*,*,*,*,*"
+                    ColumnDefinitions="*,*"
+                    WidthRequest="500">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="HorizontalOptions" Value="Center"/>
+                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                            <Setter Property="VerticalTextAlignment" Value="Center"/>
+                            <Setter Property="TextColor" Value="White"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label
+                        Text="UHf Channel:" 
+                        Grid.Column="0" Grid.Row="0"/>
+                    <Entry
+                        Grid.Column="1" Grid.Row="0"
+                        Placeholder="UHF Channel"
+                        Text="{Binding FrequencieUhf}"/>
+                
+                    <Label Text="Date:" Grid.Column="0" Grid.Row="1"
+                         />
+                    <DatePicker
+                        Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"                   
+                        Date="{Binding FrequencieUhfDate}">
+                        <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
+                    </DatePicker>
+
+                    <Label Text="Technician:" Grid.Column="0" Grid.Row="2" 
+                         />
+                    <Picker
+                        Grid.Column="1" Grid.Row="2" 
+                        ItemsSource="{Binding TechnicianList}"
+                        SelectedItem="{Binding FrequencieUhfTechnician}"/>
+
+                    <Label Text="Chief Technician:" Grid.Column="0" Grid.Row="3"
+                         />
+                    <Picker
+                        Grid.Column="1"
+                        Grid.Row="3" 
+                        ItemsSource="{Binding ChiefTechnicianList}"
+                        SelectedItem="{Binding FrequencieUhfChiefTechnician}"/>
+                    <HorizontalStackLayout
+                        Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"
+                        HorizontalOptions="Center"
+                        Spacing="5">
+                        <Button 
+                            x:Name="UhfAddButton"
+                            Text="Add Frequencies"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddUhfFrecCommand}"
+                            WidthRequest="160"
+                            Clicked="FormUhf_Button_Clicked"
+                            />
+                        <Button 
+                            x:Name="UhfUpdateButton"
+                            Text="Add Frequencies"
+                            IsVisible="False"
+                            Style="{StaticResource UpdateButtonStyle}"
+                            Command="{Binding UpdateUhfFrequencieCommand}"
+                            WidthRequest="160"
+                            Clicked="FormUhf_Button_Clicked"
+                            />
+                        <Button 
+                            x:Name="UhfDeleteButton"
+                            Text="Delete Frequencies"
+                            IsVisible="False"
+                            Style="{StaticResource DeleteButtonStyle}"
+                            Command="{Binding DeleteUhfFreCommand}"
+                            WidthRequest="160"
+                            Clicked="FormUhf_Button_Clicked"
+                           />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <HorizontalStackLayout 
+                    Spacing="5" 
+                    BackgroundColor="White"
+                    HorizontalOptions="Center"
+                    WidthRequest="440"
+                    >
+                    <Label 
+                        Text="UHF Channel" 
+                        WidthRequest="100" 
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Date"
+                        WidthRequest="100"
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Technician" 
+                        WidthRequest="100"
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label 
+                        Text="Chief Technician" 
+                        WidthRequest="100" 
+                        Style="{StaticResource ListView_LabelStyle}"
+                        />
+                    <Label WidthRequest="10"/>
+                </HorizontalStackLayout>
+
+
+                <ListView 
+                    x:Name="UhfList"          
+                    ItemsSource="{Binding UhfFrequencies}"
+                    SelectedItem="{Binding SelectedUhf}"
+                    ItemSelected="UhfList_ItemSelected"
+                    HorizontalOptions="Center"    
+                    WidthRequest="440"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:FrequenciesUhfModel">
+                            <ViewCell>
+                                <Grid
+                                    ColumnDefinitions="100,100,100,100"
+                                    ColumnSpacing="5"
+                                    Margin="5"
+                                    HorizontalOptions="Center">
+                                    <Frame                                     
+                                        Grid.Column="0" Grid.ColumnSpan="4" 
+                                        Style="{StaticResource FrameInListView}"
+                                        />
+                                    <Label 
+                                        Text="{Binding FrequencieUhf}" 
+                                        Grid.Column="0"/>
+                                    <Label 
+                                        Text="{Binding FrequencieUhfDate}" 
+                                        Grid.Column="1"/>
+                                    <Label 
+                                        Text="{Binding FrequencieUhfTechnician}" 
+                                        Grid.Column="2"/>
+                                    <Label 
+                                        Text="{Binding FrequencieUhfChiefTechnician}" 
+                                        Grid.Column="3"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
